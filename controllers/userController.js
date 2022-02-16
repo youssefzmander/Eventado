@@ -185,55 +185,115 @@ exports.resendConfirmation = async (req, res) => {
 };
 
 exports.forgotPassword = async (req, res) => {
-  const resetCode = req.body.resetCode
-  const user = await User.findOne({ "email": req.body.email });
+  User.findOne({ email: req.body.email })
+    .then(User => {
+      if (!User) return res.status(401).json({ message: 'The email address ' + req.body.email + ' is not associated with any account. Double-check your email address and try again.' });
+      //Generate and set password reset token
+      User.generatePasswordReset();
+      // Save the updated user object
+      User.save()
+        .then(User => {
+          // send email
+          let token = User.resetPasswordToken;
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'eventado344@gmail.com',
+              pass: 'eventado123!'
+            }
+          });
 
-  if (user) {
-      // token creation
-      const token = jwt.sign({ _id: user._id, email: user.email }, process.env.token_secret, {
-          expiresIn: "3600000", // in Milliseconds (3600000 = 1 hour)
-      });
+          const mailOptions = {
+            from: 'eventado344@gmail.com',
+            to: User.email,
+            subject: 'Reset your password',
+            html: "<h2>Use this as your reset code : " + token + "</h2>"
+          };
 
-      sendPasswordResetEmail(req.body.email, token, resetCode);
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
 
-      res.status(200).send({ "message": "Reset email has been sent to " + user.email })
-  } else {
-      res.status(404).send({ "message": "User not found" })
-  }
+          res.status(200).json({ token: token });
+        })
+        .catch(err => res.status(500).json({ message: err.message }));
+    })
+    .catch(err => res.status(500).json({ message: err.message }));
 };
 
 
 
-async function sendPasswordResetEmail(email, token, resetCode) {
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-          user: 'eventado344@gmail.com',
-          pass: 'eventado123!'
-      }
-  });
+exports.resetPassword =  async(req, res) => {
+  const { email,password } = req.body;
 
-  transporter.verify(function (error, success) {
-      if (error) {
-          console.log(error);
-      } else {
-          console.log("Server is ready to take our messages");
-      }
-  });
+  newEncryptedPassword = await bcrypt.hash(password, 10);
 
-  const mailOptions = {
-      from: 'eventado344@gmail.com',
-      to: email,
-      subject: 'Reset your password',
-      html: "<h2>Use this as your reset code : " + resetCode + "</h2>"
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-          console.log(error);
-      } else {
-          console.log('Email sent: ' + info.response);
+  let user = await User.findOneAndUpdate(
+    { email: email },
+      {
+          $set: {
+              password: newEncryptedPassword
+          }
       }
-  });
+  );
+
+  res.send({ user });
+}
+
+
+exports.makeFollow = async (req, res, next) => {
+  if (!req.body) {
+
+    return res.status(422).json({ message: 'Follow id is required' })
+  }
+
+  const checkAvailable = await User.findOne({ _id: req.params.id }).exec()
+  if (!checkAvailable) {
+    return res.json({ message: 'Not found' })
+  }
+
+
+  let checkFollowingAvailable = await checkAvailable.following.find(id => id == req.body._id)
+  if (checkFollowingAvailable) {
+    return res.json({ message: 'Already following' })
+  }
+
+
+  const createFollowing = await User.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { following: req.body._id } },
+    { new: true }
+  ).exec()
+
+  const createFollower = await User.findOneAndUpdate(
+    { _id: req.body._id },
+    { $push: { followers: req.params.id } },
+    { new: true }
+  ).exec()
+
+  if (createFollowing && createFollower) {
+    return res.status(201).json({ message: 'success' })
+  }
+}
+
+exports.getFollowers = async (req, res) => {
+
+  User.findById(mongoose.Types.ObjectId(req.params.id)
+    , (err, User) => {
+      res.json(User.followers);
+      return;
+    });
+}
+
+exports.getFollowing = async (req, res) => {
+
+  User.findById(mongoose.Types.ObjectId(req.params.id)
+    , (err, User) => {
+      res.json(User.following);
+      return;
+    });
 }

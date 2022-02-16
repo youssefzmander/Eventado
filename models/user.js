@@ -7,7 +7,10 @@ const crypto = require('crypto')
 const UserSchema = new mongoose.Schema({
 
   f_name: {
-    type: String,
+    type: String
+  },
+  username: {
+    type: String
   },
   email: {
     type: String
@@ -18,22 +21,26 @@ const UserSchema = new mongoose.Schema({
   avatar: {
     type: String
   },
+  Role: {
+    type: String
+  },
   isVerified: {
     type: Boolean
   },
-  resetPasswordToken: {
-    type: String
-  },
-  resetPasswordExpires: {
-    type: Date,
-    required: false
-  },
-  friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }]
+  followers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+  following: [{ type: mongoose.Schema.ObjectId, ref: "User" }]
+
+
 },
+
+
   { timestamps: true })
 
 
-
+UserSchema.methods.generatePasswordReset = function () {
+  this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+  this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
+};
 
 
 //mongoose.set('useFindAndModify', false);

@@ -18,7 +18,14 @@ router.post("/resendConfirmation", userController.resendConfirmation);
 
 router.post("/forgotPassword", userController.forgotPassword);
 
+router.put("/editPassword/:token", userController.resetPassword);
 
+
+router.put('/:id/follow',userController.makeFollow);
+
+router.get('/followers/:id',userController.getFollowers)
+
+router.get('/following/:id',userController.getFollowing)
 
 
 
