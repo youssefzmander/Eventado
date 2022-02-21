@@ -35,8 +35,8 @@ exports.createUser = async (req, res) => {
     newUser.email = email;
     newUser.password = mdpEncrypted;
     newUser.isVerified = false;
-    //newUser.role = role;
-
+    newUser.role = role;
+    newUser.Avatar = "http://localhost:3001/" + req.files['avatar'][0].path.slice(7)
     const token = jwt.sign({ _id: newUser._id }, process.env.token_secret, {
       expiresIn: "60000", // in Milliseconds (3600000 = 1 hour)
     });
@@ -227,18 +227,18 @@ exports.forgotPassword = async (req, res) => {
 
 
 
-exports.resetPassword =  async(req, res) => {
-  const { email,password } = req.body;
+exports.resetPassword = async (req, res) => {
+  const { email, password } = req.body;
 
   newEncryptedPassword = await bcrypt.hash(password, 10);
 
   let user = await User.findOneAndUpdate(
     { email: email },
-      {
-          $set: {
-              password: newEncryptedPassword
-          }
+    {
+      $set: {
+        password: newEncryptedPassword
       }
+    }
   );
 
   res.send({ user });

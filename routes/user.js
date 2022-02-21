@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config');
+
 
 
 router.get('/:id',userController.getById);
 
-router.post('/', userController.createUser);
+router.post('/', multer.fields([{ name: 'avatar', maxCount: 1 }]),userController.createUser);
 
 router.post('/login',userController.login);
 
