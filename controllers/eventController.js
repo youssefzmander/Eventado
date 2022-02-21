@@ -28,7 +28,7 @@ exports.createEvent = async (req, res) => {
         const newEvent = new event();
         newEvent.name = name;
         newEvent.date = date;
-        newEvent.Affiche = Affiche;
+        newEvent.Affiche = "http://localhost:3001/" + req.file.path
         newEvent.save();
         res.status(201).json({ newEvent });
     }
