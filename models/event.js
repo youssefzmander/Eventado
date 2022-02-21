@@ -1,11 +1,13 @@
 const mongoose = require('mongoose')
+const { required } = require('nodemon/lib/config')
 
 
 
 const eventSchema = new mongoose.Schema({
 
     name: {
-        type: String
+        type: String,
+        required: true
       },
     date: {
         type: Date
@@ -17,11 +19,11 @@ const eventSchema = new mongoose.Schema({
     description: {
         type: String
     },
-    Ogranisateur: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+    Ogranisateur: { type: mongoose.Schema.ObjectId, ref: "User" },
     Affiche : {
         type:String
     }
 
 })
 
-module.exports = mongoose.model('Like', eventSchema)
+module.exports = mongoose.model('event', eventSchema)

@@ -20,7 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 const userRouter = require('./routes/user')
 app.use('/user', userRouter)
 
-
+const EventRouter = require('./routes/event')
+app.use('/event', EventRouter)
 
 
 app.listen(3001, () => console.log('Server Started'))
