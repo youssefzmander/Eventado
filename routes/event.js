@@ -4,8 +4,11 @@ const eventController = require('../controllers/eventController');
 
 router.get('/', eventController.getAllEvents);
 
-router.post('/:id',eventController.createEvent);
+router.post('/',eventController.createEvent);
 
+router.put('/:id',eventController.updateEvent);
+
+router.delete('/:id',eventController.deleteEvent);
 
 
 

@@ -12,24 +12,7 @@ exports.getAllEvents = async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 }
-/*
-exports.createEvent =  (req, res) => {
-    const event = new event({
-        name: req.body.name,
-        date: req.body.date,
-        time: req.body.time,
-        participants: req.body.participants,
-        Ogranisateur: req.body.Ogranisateur,
-        Affiche: req.body.Affiche,
 
-    });
-    event.save()
-        .then(() => res.status(201).json(event))
-        .catch(error => res.status(400).json({ error }));
-
-
-};
-*/
 
 
 
@@ -46,8 +29,47 @@ exports.createEvent = async (req, res) => {
         newEvent.name = name;
         newEvent.date = date;
         newEvent.Affiche = Affiche;
-        newEvent.ogranisateur=req.params.id
         newEvent.save();
         res.status(201).json({ newEvent });
     }
 }
+
+
+
+exports.updateEvent = async (req, res) => {
+    const event = new event({
+      _id: req.params.id,
+      ...req.body
+    });
+    event.updateOne({ _id: req.params.id }, event).then(
+      () => {
+        res.status(201).json({
+          message: 'event updated successfully!',
+          event
+        });
+      }
+    ).catch(
+      (error) => {
+        res.status(400).json({
+          error: error
+        });
+      }
+    );
+  }
+
+
+  exports.deleteEvent = async (req, res) => {
+    event.deleteOne({_id: req.params.id}).then(
+      () => {
+        res.status(200).json({
+          message: 'Deleted!'
+        });
+      }
+    ).catch(
+      (error) => {res.status(400).json({error: error});
+      }
+    );
+  } 
+  
+
+

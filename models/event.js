@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { required } = require('nodemon/lib/config')
 
 
 
@@ -8,7 +7,7 @@ const eventSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
-      },
+    },
     date: {
         type: Date
     },
@@ -19,9 +18,8 @@ const eventSchema = new mongoose.Schema({
     description: {
         type: String
     },
-    Ogranisateur: { type: mongoose.Schema.ObjectId, ref: "User" },
-    Affiche : {
-        type:String
+    Affiche: {
+        type: String
     }
 
 })
