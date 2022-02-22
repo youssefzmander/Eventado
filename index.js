@@ -23,4 +23,8 @@ const EventRouter = require('./routes/event')
 app.use('/event', EventRouter)
 
 
+const EventRegisterRouter = require('./routes/eventRegister')
+app.use('/eventRegister', EventRegisterRouter)
+
+
 app.listen(3001, () => console.log('Server Started'))

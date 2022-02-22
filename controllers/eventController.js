@@ -13,10 +13,6 @@ exports.getAllEvents = async (req, res) => {
     }
 }
 
-
-
-
-
 exports.createEvent = async (req, res) => {
 
     const { name, date, time, participants, ogranisateur, Affiche } = req.body;

@@ -36,7 +36,7 @@ exports.createUser = async (req, res) => {
     newUser.password = mdpEncrypted;
     newUser.isVerified = false;
     newUser.role = role;
-    newUser.Avatar = "http://localhost:3001/" + req.files['avatar'][0].path.slice(7)
+    newUser.Avatar =  "http://localhost:3001/" + req.file.path
     const token = jwt.sign({ _id: newUser._id }, process.env.token_secret, {
       expiresIn: "60000", // in Milliseconds (3600000 = 1 hour)
     });
