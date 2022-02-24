@@ -3,199 +3,249 @@ import 'package:flutter_switch/flutter_switch.dart';
 import '../main.dart';
 import 'avatr_page.dart';
 
-
-class SingUp extends StatelessWidget{
+class SingUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  appBar: AppBar(
-    elevation: 0,
-    backgroundColor: Colors.white.withOpacity(0),
-    leading: IconButton(
-      icon: Icon(
-        Icons.arrow_back,
-        color: Colors.black,
-        size: 30,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white.withOpacity(0),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    ),
-  ),
       body: SingleChildScrollView(
-        child:Column(
+        child: Column(
           children: [
             Container(
               margin: EdgeInsets.symmetric(
-                vertical: 20, horizontal: 20,
+                vertical: 20,
+                horizontal: 20,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                   Text("Sing Up",
-                        style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-
-                      ),)
-
+                children: const [
+                  Text(
+                    "Sing Up",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 35),
+            const SizedBox(height: 35),
             SinupForm(),
-            SizedBox(height: 35),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  primary: color,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 125,
-                    vertical: 13,
+            const SizedBox(height: 35),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SinupForm extends StatefulWidget {
+  @override
+  _SinupFormFormState createState() => _SinupFormFormState();
+}
+
+class _SinupFormFormState extends State<SinupForm> {
+  var _obscureText = true;
+  bool role = false;
+  late String? _fname;
+  late String? _email;
+  late String? _pwd;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 30,
+      ),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: "Full Name",
+                  labelStyle: TextStyle(
+                    color: Colors.grey[400],
                   ),
                 ),
-                child: Text(
-                  'suivant',
+                onSaved: (String? value) {
+                  _fname = value;
+                },
+                validator: (String? value) {
+                  if (value!.isEmpty || value.length < 8) {
+                    return "Too short !";
+                  } else {
+                    return null;
+                  }
+                }),
+            const SizedBox(height: 30),
+            TextFormField(
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: "abc@email.com",
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
                 ),
-                onPressed: () {
+              ),
+              onSaved: (String? value) {
+                _email = value;
+              },
+              validator: (String? value) {
+                RegExp regex = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                if (value!.isEmpty || !regex.hasMatch(value)) {
+                  return "Invalid Email !";
+                } else {
+                  return null;
+                }
+              },
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Choose your UserName",
+                  labelStyle: TextStyle(
+                    color: Colors.grey[400],
+                  ),
+                  border: const OutlineInputBorder()),
+            ),
+            const SizedBox(height: 30),
+            TextFormField(
+              obscureText: _obscureText,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+                labelText: 'Password',
+                suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.visibility,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+              ),
+              onSaved: (String? value) {
+                _pwd = value;
+              },
+              validator: (String? value) {
+                if (value!.isEmpty || value.length < 5) {
+                  return "Too Short !";
+                } else {
+                  return null;
+                }
+              },
+            ),
+            const SizedBox(height: 35),
+            TextFormField(
+              obscureText: _obscureText,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+                labelText: 'ConfirmPassword',
+                suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.visibility,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Row(
+                  children: <Widget>[
+                    const Expanded(
+                      child: Text(
+                        " SingUp as an admin",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: FlutterSwitch(
+                        width: 75.0,
+                        height: 35.0,
+                        valueFontSize: 25.0,
+                        toggleSize: 20,
+                        toggleColor: color,
+                        borderRadius: 30.0,
+                        padding: 8.0,
+                        value: role,
+                        onToggle: (val) {
+                          setState(() {
+                            role = val;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                primary: color,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 125,
+                  vertical: 13,
+                ),
+              ),
+              child: const Text(
+                'suivant',
+              ),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Avatar(),
                     ),
                   );
-                },
-              ),
-
+                }
+              },
+            ),
           ],
         ),
-
-      ),
-);
-  }
-
-}
-class SinupForm extends StatefulWidget {
-  @override
-  _SinupFormFormState createState() => _SinupFormFormState();
-}
-
-class _SinupFormFormState extends State<SinupForm>{
-  var _obscureText = true;
-  bool role = false ;
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 30,
-      ),
-      child: Column(
-        children: <Widget>[
-           TextField(
-            decoration: InputDecoration(
-              labelText: "Full Name",
-              labelStyle: TextStyle(color: Colors.grey[400],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 30),
-            TextField(
-            decoration: InputDecoration(
-              labelText: "abc@email.com",
-              labelStyle: TextStyle(color: Colors.grey[400],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 30),
-            TextField(
-            decoration: InputDecoration(
-              labelText: "Phone Number",
-              labelStyle: TextStyle(color: Colors.grey[400],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 30),
-             TextField(
-              obscureText: _obscureText,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.visibility,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-              ),
-            ),
-
-          SizedBox(height: 35),
-           TextField(
-              obscureText: _obscureText,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-                labelText: 'ConfirmPassword',
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.visibility,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-              ),
-            ),
-          SizedBox(height: 20,),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Padding(padding: const EdgeInsets.only(left :8),
-              child: Row(
-                children: <Widget>[
-                  const Expanded(child: Text(" SingUp as an admin",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  ),
-                Expanded(
-                    child:  FlutterSwitch(
-                      width: 75.0,
-                      height: 35.0,
-                      valueFontSize: 25.0,
-                      toggleSize: 20,
-                      toggleColor: color ,
-                      borderRadius: 30.0,
-                      padding: 8.0,
-                      value :role,
-                      onToggle: (val) {setState(() { role= val;});
-                      },
-                    ),
-
-                )],
-              ),
-
-            ),
-          ),
-        ],
       ),
     );
   }
 }
-

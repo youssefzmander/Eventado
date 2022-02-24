@@ -20,12 +20,14 @@ class WelcomePage extends StatelessWidget {
               DelayedAnimation(
                 delay: 1500,
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(10, 20, 10,20),
-
-                  child: Image.asset('assets/images/logo.png',width: 250,height: 250, ),
+                  margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 250,
+                    height: 250,
+                  ),
                 ),
               ),
-
               DelayedAnimation(
                 delay: 2500,
                 child: Container(
@@ -33,17 +35,12 @@ class WelcomePage extends StatelessWidget {
                     top: 100,
                     bottom: 20,
                   ),
-                  child: Text(
-                    "Next generation of entertainment.",
-
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,)
-
-
-
-                  ),
+                  child: const Text("Next generation of entertainment.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
                 ),
               ),
               DelayedAnimation(

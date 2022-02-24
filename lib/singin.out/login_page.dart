@@ -10,8 +10,8 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
-
         leading: IconButton(
+          // ignore: prefer_const_constructors
           icon: Icon(
             Icons.close,
             color: Colors.black,
@@ -33,17 +33,13 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                   Text(
-                      "login",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-
-                      ),
-
+                  Text(
+                    "login",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-
-
+                  ),
                 ],
               ),
             ),
@@ -51,26 +47,26 @@ class LoginPage extends StatelessWidget {
             LoginForm(),
             SizedBox(height: 125),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  primary: color,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 125,
-                    vertical: 13,
-                  ),
+              style: ElevatedButton.styleFrom(
+                shape: StadiumBorder(),
+                primary: color,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 125,
+                  vertical: 13,
                 ),
-                child: Text(
-                  'CONFIRM',
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(),
-                    ),
-                  );
-                },
               ),
+              child: Text(
+                'CONFIRM',
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(),
+                  ),
+                );
+              },
+            ),
             SizedBox(height: 90),
             Align(
               alignment: Alignment.centerRight,
@@ -80,14 +76,12 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-
-                    child: Text(
-                      "SKIP",
-                      style: TextStyle(
-                        fontSize: 15,
-
-                      ),
+                  child: Text(
+                    "SKIP",
+                    style: TextStyle(
+                      fontSize: 15,
                     ),
+                  ),
                 ),
               ),
             ),
@@ -107,34 +101,34 @@ class _LoginFormState extends State<LoginForm> {
   var _obscureText = true;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 30,
-      ),
-
-      child: Column(
-        children: [
-
-          TextField(
+    return Form(
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 30,
+        ),
+        child: Column(
+          children: [
+            TextFormField(
               decoration: InputDecoration(
+                border: OutlineInputBorder(),
                 labelText: 'Your Email',
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
-
                 ),
               ),
               keyboardType: TextInputType.emailAddress,
             ),
-
-          SizedBox(height: 15),
-           TextField(
+            const SizedBox(height: 15),
+            TextFormField(
               obscureText: _obscureText,
               decoration: InputDecoration(
+                border: const OutlineInputBorder(),
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
                 ),
                 labelText: 'Password',
                 suffixIcon: IconButton(
+                  // ignore: prefer_const_constructors
                   icon: Icon(
                     Icons.visibility,
                     color: Colors.black,
@@ -147,8 +141,29 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-
-        ],
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: StadiumBorder(),
+                primary: color,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 125,
+                  vertical: 13,
+                ),
+              ),
+              child: Text(
+                'CONFIRM',
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
