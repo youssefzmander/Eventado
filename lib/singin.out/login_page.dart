@@ -43,40 +43,19 @@ class LoginPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 35),
+            const SizedBox(height: 35),
             LoginForm(),
             SizedBox(height: 125),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(),
-                primary: color,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 125,
-                  vertical: 13,
-                ),
-              ),
-              child: Text(
-                'CONFIRM',
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Home(),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 90),
+            const SizedBox(height: 90),
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: EdgeInsets.only(right: 35),
+                padding: const EdgeInsets.only(right: 35),
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     "SKIP",
                     style: TextStyle(
                       fontSize: 15,
@@ -99,9 +78,15 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   var _obscureText = true;
+  late String? _email;
+  late String? _password;
+  final String _baseUrl = "10.0.2.2:3001";
+  final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _keyForm,
       child: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 30,
@@ -116,6 +101,18 @@ class _LoginFormState extends State<LoginForm> {
                   color: Colors.grey[400],
                 ),
               ),
+              onSaved: (String? value) {
+                _email = value;
+              },
+              validator: (String? value) {
+                RegExp regex = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                if (value!.isEmpty || !regex.hasMatch(value)) {
+                  return "Invalid Email !";
+                } else {
+                  return null;
+                }
+              },
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 15),
@@ -134,6 +131,9 @@ class _LoginFormState extends State<LoginForm> {
                     color: Colors.black,
                   ),
                   onPressed: () {
+                    if (_keyForm.currentState!.validate()) {
+                      _keyForm.currentState!.save();
+                    }
                     setState(() {
                       _obscureText = !_obscureText;
                     });
@@ -150,7 +150,7 @@ class _LoginFormState extends State<LoginForm> {
                   vertical: 13,
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'CONFIRM',
               ),
               onPressed: () {

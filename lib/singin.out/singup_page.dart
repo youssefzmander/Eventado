@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import '../main.dart';
 import 'avatr_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SingUp extends StatelessWidget {
   @override
@@ -11,7 +13,7 @@ class SingUp extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
             size: 30,
@@ -25,7 +27,7 @@ class SingUp extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 20,
                 horizontal: 20,
               ),
@@ -60,9 +62,12 @@ class SinupForm extends StatefulWidget {
 class _SinupFormFormState extends State<SinupForm> {
   var _obscureText = true;
   bool role = false;
-  late String? _fname;
+  late String? _name;
+  late String? _username;
   late String? _email;
   late String? _pwd;
+
+  final String _baseUrl = "10.0.2.2:3001";
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -86,7 +91,7 @@ class _SinupFormFormState extends State<SinupForm> {
                   ),
                 ),
                 onSaved: (String? value) {
-                  _fname = value;
+                  _name = value;
                 },
                 validator: (String? value) {
                   if (value!.isEmpty || value.length < 8) {
@@ -117,6 +122,7 @@ class _SinupFormFormState extends State<SinupForm> {
                 }
               },
             ),
+            const SizedBox(height: 30),
             TextFormField(
               decoration: InputDecoration(
                   labelText: "Choose your UserName",
@@ -124,6 +130,16 @@ class _SinupFormFormState extends State<SinupForm> {
                     color: Colors.grey[400],
                   ),
                   border: const OutlineInputBorder()),
+              onSaved: (String? value) {
+                _username = value;
+              },
+              validator: (String? value) {
+                if (value!.isEmpty || value.length < 8) {
+                  return "Too short !";
+                } else {
+                  return null;
+                }
+              },
             ),
             const SizedBox(height: 30),
             TextFormField(
@@ -234,12 +250,38 @@ class _SinupFormFormState extends State<SinupForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Avatar(),
-                    ),
-                  );
+                  Map<String, dynamic> userData = {
+                    "name": _name,
+                    "email": _email,
+                    "username": _username,
+                    "password": _pwd,
+                  };
+
+                  Map<String, String> headers = {
+                    "Content-Type": "application/json; charset=UTF-8"
+                  };
+                  http
+                      .post(Uri.http(_baseUrl, "/user"),
+                          headers: headers, body: json.encode(userData))
+                      .then((http.Response response) {
+                    if (response.statusCode == 201) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Avatar(),
+                        ),
+                      );
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext) {
+                            return const AlertDialog(
+                              title: Text("Information"),
+                              content: Text("An error has occurred. Try Again"),
+                            );
+                          });
+                    }
+                  });
                 }
               },
             ),
