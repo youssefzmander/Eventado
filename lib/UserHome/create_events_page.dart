@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pim/UserHome/paiement-page.dart';
-import 'package:pim/singin.out/avatr_page.dart';
-
+import 'package:date_time_picker/date_time_picker.dart';
 import '../main.dart';
 
 class Create extends StatelessWidget {
@@ -41,7 +40,7 @@ class Create extends StatelessWidget {
               height: 35,
             ),
             CreateForm(),
-            SizedBox(
+            const SizedBox(
               height: 35,
             ),
           ],
@@ -58,110 +57,108 @@ class CreateForm extends StatefulWidget {
 
 class _CreateFormFormState extends State<CreateForm> {
   DateTime date = DateTime(2022, 02, 23);
+  late String? _name;
+  late String? _date;
+  late String? _nbrMax;
+  late String? _description;
+  final String _baseUrl = "10.0.2.2:3001";
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 30,
         ),
         child: Column(
           children: <Widget>[
-            TextField(
-              decoration: InputDecoration(
-                labelText: "Event Name ",
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
+            TextFormField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: "Event Name ",
+                  labelStyle: TextStyle(
+                    color: Colors.grey[400],
+                  ),
                 ),
-              ),
-            ),
+                onSaved: (String? value) {
+                  _name = value;
+                },
+                validator: (String? value) {
+                  if (value!.isEmpty || value.length < 8) {
+                    return "Too short !";
+                  } else {
+                    return null;
+                  }
+                }),
             const SizedBox(
               height: 35,
             ),
-            TextField(
+            TextFormField(
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                border: const OutlineInputBorder(),
                 labelText: "nbr participants",
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
                 ),
               ),
+              onSaved: (String? value) {
+                _nbrMax = value;
+              },
             ),
             const SizedBox(
               height: 35,
             ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: "Description",
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
+            TextFormField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: "Description",
+                  labelStyle: TextStyle(
+                    color: Colors.grey[400],
+                  ),
                 ),
-              ),
-            ),
+                onSaved: (String? value) {
+                  _description = value;
+                },
+                validator: (String? value) {
+                  if (value!.isEmpty || value.length < 8) {
+                    return "Too short !";
+                  } else {
+                    return null;
+                  }
+                }),
             const SizedBox(height: 20),
             Affiche(),
-            const SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        "${date.year}/${date.month}/${date.day}",
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.grey),
-                      ),
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            DateTime? newDate = await showDatePicker(
-                              context: context,
-                              initialDate: date,
-                              firstDate: DateTime(2022),
-                              lastDate: DateTime(2050),
-                            );
-                            if (newDate == null) return;
-                            setState(() => date = newDate);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder(),
-                            primary: color,
-                          ),
-                          child: const Text("Select Date")),
-                    ),
-                  ],
-                ),
-              ),
+            DateTimePicker(
+              type: DateTimePickerType.dateTimeSeparate,
+              dateMask: 'd MMM, yyyy',
+              initialValue: DateTime.now().toString(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+              icon: Icon(Icons.event),
+              dateLabelText: 'Date',
+              timeLabelText: "Hour",
+              selectableDayPredicate: (date) {
+                // Disable weekend days to select from the calendar
+                if (date.weekday == 6 || date.weekday == 7) {
+                  return false;
+                }
+
+                return true;
+              },
+              onSaved: (String? val) {
+                print(val);
+                _date = val;
+              },
             ),
-            SizedBox(
+            const SizedBox(
               height: 35,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(),
-                primary: color,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 50,
-                  vertical: 13,
-                ),
-              ),
-              child: Text(
-                'Send request',
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Paiemenet(),
-                  ),
-                );
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(),
+                shape: const StadiumBorder(),
                 primary: color,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 50,
@@ -169,17 +166,20 @@ class _CreateFormFormState extends State<CreateForm> {
                 ),
               ),
               child: const Text(
-                'Generate NFT Here',
+                'Send request',
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Paiemenet(),
-                  ),
-                );
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Paiemenet(),
+                    ),
+                  );
+                }
               },
-            )
+            ),
           ],
         ),
       ),

@@ -37,27 +37,6 @@ class SocialPage extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             LoginForm(),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const StadiumBorder(),
-                primary: color,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 25,
-                  vertical: 10,
-                ),
-              ),
-              child: const Text(
-                'CONFIRM',
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Home(),
-                  ),
-                );
-              },
-            ),
             Align(
               alignment: Alignment.centerRight,
               child: Padding(

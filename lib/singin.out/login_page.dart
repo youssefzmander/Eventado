@@ -95,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             TextFormField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 labelText: 'Your Email',
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
@@ -131,9 +131,6 @@ class _LoginFormState extends State<LoginForm> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    if (_keyForm.currentState!.validate()) {
-                      _keyForm.currentState!.save();
-                    }
                     setState(() {
                       _obscureText = !_obscureText;
                     });
@@ -141,9 +138,10 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
+            const SizedBox(height: 15),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(),
+                shape: const StadiumBorder(),
                 primary: color,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 125,
@@ -154,12 +152,15 @@ class _LoginFormState extends State<LoginForm> {
                 'CONFIRM',
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Home(),
-                  ),
-                );
+                if (_keyForm.currentState!.validate()) {
+                  _keyForm.currentState!.save();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Home(),
+                    ),
+                  );
+                }
               },
             ),
           ],
