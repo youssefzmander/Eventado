@@ -5,6 +5,7 @@ import '../main.dart';
 import '../UserHome/home.dart';
 import 'login_page.dart';
 
+
 class SocialPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

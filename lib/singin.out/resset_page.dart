@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pim/main.dart';
 import 'package:pim/singin.out/newpsw_page.dart';
-class Resset extends StatelessWidget{
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class Resset extends StatelessWidget {
+  final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+  late String? _email;
+  final String _baseUrl = "10.0.2.2:3001";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
-
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: Colors.black,
             size: 30,
@@ -19,67 +25,106 @@ class Resset extends StatelessWidget{
             Navigator.pop(context);
           },
         ),
-
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+          margin: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
           child: Column(
             children: [
-              Text("Resset Password",
+              const Text(
+                "Resset Password",
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
-              Text("Please enter your address email to reset your password "),
-              SizedBox(height: 20),
-              TextField(decoration: InputDecoration(
-                hintText: "abc@email.com",
-                labelStyle: TextStyle(color: Colors.grey[400],),
-                border: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(0.0),
-
+              const SizedBox(height: 20),
+              const Text(
+                  "Please enter your address email to reset your password "),
+              const SizedBox(height: 20),
+              Form(
+                key: _keyForm,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "abc@email.com",
+                    labelStyle: TextStyle(
+                      color: Colors.grey[400],
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(5.4),
+                      ),
+                      borderSide: new BorderSide(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                    ),
                   ),
-                  borderSide: new BorderSide(
-                    color: Colors.black,
-                    width: 1.0,
-                  ),
+                  onSaved: (String? value) {
+                    _email = value;
+                  },
+                  validator: (String? value) {
+                    RegExp regex = RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                    if (value!.isEmpty || !regex.hasMatch(value)) {
+                      return "Invalid Email !";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
-
               ),
-              ),
-              SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
+                  shape: const StadiumBorder(),
                   primary: color,
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 120,
                     vertical: 10,
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'SEND',
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NewPassword(),
-                    ),
-                  );
-                },
-              ),
+                  if (_keyForm.currentState!.validate()) {
+                    _keyForm.currentState!.save();
 
+                    Map<String, dynamic> userData = {
+                      "email": _email,
+                    };
+                    Map<String, String> headers = {
+                      "Content-Type": "application/json; charset=UTF-8"
+                    };
+
+                    http
+                        .post(Uri.http(_baseUrl, "/user/forgotPassword"),
+                            headers: headers, body: json.encode(userData))
+                        .then((http.Response response) async {
+                      if (response.statusCode == 200) {
+                        Map<String, dynamic> userData =
+                            json.decode(response.body);
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Try Again"),
+                                content: Text("Invalid Email"),
+                              );
+                            });
+                      }
+                    });
+
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NewPassword()));
+                  }
+                },
+              )
             ],
           ),
         ),
       ),
     );
-
   }
-
 }

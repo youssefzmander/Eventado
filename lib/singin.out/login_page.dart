@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../main.dart';
 import '../UserHome/home.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -137,6 +142,9 @@ class _LoginFormState extends State<LoginForm> {
                   },
                 ),
               ),
+              onSaved: (String? value) {
+                _password = value;
+              },
             ),
             const SizedBox(height: 15),
             ElevatedButton(
@@ -154,12 +162,49 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () {
                 if (_keyForm.currentState!.validate()) {
                   _keyForm.currentState!.save();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(),
-                    ),
-                  );
+
+                  Map<String, dynamic> userData = {
+                    "email": _email,
+                    "password": _password
+                  };
+
+                  Map<String, String> headers = {
+                    "Content-Type": "application/json; charset=UTF-8"
+                  };
+
+                  http
+                      .post(Uri.http(_baseUrl, "/user/login"),
+                          headers: headers, body: json.encode(userData))
+                      .then((http.Response response) async {
+                    if (response.statusCode == 200) {
+                      Map<String, dynamic> userData =
+                          json.decode(response.body);
+                      /* SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString("userId", userData["_id"]);
+                      print(prefs.getString("userId"));*/
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Home()));
+                    } else if (response.statusCode == 403) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const AlertDialog(
+                              title: Text("Try again"),
+                              content: Text("Incorrect credentials!"),
+                            );
+                          });
+                    } else if (response.statusCode == 201) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const AlertDialog(
+                              title: Text("Information"),
+                              content: Text("email not verified!"),
+                            );
+                          });
+                    }
+                  });
                 }
               },
             ),

@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pim/UserHome/paiement-page.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import '../main.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Create extends StatelessWidget {
   @override
@@ -171,12 +173,29 @@ class _CreateFormFormState extends State<CreateForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Paiemenet(),
-                    ),
-                  );
+
+                  Map<String, dynamic> eventData = {
+                    "name": _name,
+                    "date": _date,
+                    "nbrMax": _nbrMax,
+                    "description": _description,
+                  };
+
+                  Map<String, String> headers = {
+                    "Content-Type": "application/json; charset=UTF-8"
+                  };
+                  http
+                      .post(Uri.http(_baseUrl, "/event"),
+                          headers: headers, body: json.encode(eventData))
+                      .then((http.Response response) {
+                    if (response.statusCode == 201) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Paiemenet(),
+                          ));
+                    }
+                  });
                 }
               },
             ),
