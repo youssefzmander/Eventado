@@ -45,6 +45,7 @@ class Resset extends StatelessWidget {
               Form(
                 key: _keyForm,
                 child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: "abc@email.com",
                     labelStyle: TextStyle(
@@ -104,20 +105,21 @@ class Resset extends StatelessWidget {
                       if (response.statusCode == 200) {
                         Map<String, dynamic> userData =
                             json.decode(response.body);
-                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewPassword()));
+                      } else if ((response.statusCode == 401)) {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
+                              return const AlertDialog(
                                 title: Text("Try Again"),
                                 content: Text("Invalid Email"),
                               );
                             });
                       }
                     });
-
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NewPassword()));
                   }
                 },
               )
