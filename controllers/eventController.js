@@ -15,7 +15,7 @@ exports.getAllEvents = async (req, res) => {
 
 exports.createEvent = async (req, res) => {
 
-    const { name, date, time, participants, ogranisateur, Affiche } = req.body;
+    const { name, date, nbrMax, description, /*Affiche*/ } = req.body;
 
     const verifEvent = await event.findOne({ name });
     if (verifEvent) {
@@ -24,7 +24,9 @@ exports.createEvent = async (req, res) => {
         const newEvent = new event();
         newEvent.name = name;
         newEvent.date = date;
-        newEvent.Affiche = "http://localhost:3001/" + req.file.path
+        newEvent.description=description;
+        newEvent.nbrMax=nbrMax;
+        //newEvent.Affiche = "http://localhost:3001/" + req.file.path
         newEvent.save();
         res.status(201).json({ newEvent });
     }

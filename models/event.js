@@ -9,10 +9,10 @@ const eventSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date
-    },
-    time: {
         type: String
+    },
+    nbrMax: {
+        type: Number
     },
     participants: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
     description: {

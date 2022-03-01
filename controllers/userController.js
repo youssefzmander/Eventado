@@ -36,8 +36,8 @@ exports.createUser = async (req, res) => {
     newUser.password = mdpEncrypted;
     newUser.isVerified = false;
     newUser.role = role;
-    newUser.Avatar =  "http://localhost:3001/" + req.file.path
-    const token = jwt.sign({ _id: newUser._id }, process.env.token_secret, {
+    //newUser.Avatar =  "http://localhost:3001/" + req.file.path
+    const token = jwt.sign({ _id: newUser._id }, "token_secret!!", {
       expiresIn: "60000", // in Milliseconds (3600000 = 1 hour)
     });
 
@@ -71,8 +71,8 @@ exports.updateUser = async (req, res) => {
 }
 
 
-function makeTokenForLogin(_id, role) {
-  return jwt.sign({ _id: _id, role: role }, process.env.token_secret, {
+function makeTokenForLogin(_id) {
+  return jwt.sign({ _id: _id }, "token_secret", {
     expiresIn: "99999999999", // in Milliseconds (3600000 = 1 hour)
   });
 }
@@ -88,7 +88,7 @@ exports.login = async (req, res, next) => {
     const token = makeTokenForLogin(user._id)
 
     if (!user.isVerified) {
-      res.status(200).send({ message: "email not verified" });
+      res.status(201).send({ message: "email not verified" });
     } else {
       res.status(200).send({ token, UserId: user._id });
     }
@@ -138,10 +138,9 @@ async function sendConfirmationEmail(email, token) {
 
 
 exports.confirmation = async (req, res) => {
-
   var tokenValue;
   try {
-    tokenValue = jwt.verify(req.params.token, process.env.token_secret);
+    tokenValue = jwt.verify(req.params.token, "token_secret");
   } catch (e) {
     return res.status(400).send({ message: 'The confirmation link expired, please reverify.' });
   }
@@ -151,7 +150,7 @@ exports.confirmation = async (req, res) => {
       return res.status(401).send({ message: 'User not found, please sign up.' });
     }
     else if (user.isVerified) {
-      return res.status(200).send({ message: 'This mail has already been verified, please log in' });
+      return res.status(200).send({ message: 'This mail has already been verified, please login' });
     }
     else {
       user.isVerified = true;

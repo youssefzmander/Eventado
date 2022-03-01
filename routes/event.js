@@ -6,7 +6,7 @@ const multer = require('../middleware/multer-config');
 
 router.get('/', eventController.getAllEvents);
 
-router.post('/',multer.single('Affiche'),eventController.createEvent);
+router.post('/'/*,multer.single('Affiche')*/,eventController.createEvent);
 
 router.put('/:id',eventController.updateEvent);
 
