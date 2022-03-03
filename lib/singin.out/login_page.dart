@@ -179,10 +179,14 @@ class _LoginFormState extends State<LoginForm> {
                     if (response.statusCode == 200) {
                       Map<String, dynamic> userData =
                           json.decode(response.body);
-                      /* SharedPreferences prefs =
+
+                      //sharedpreferances
+                      SharedPreferences prefs =
                           await SharedPreferences.getInstance();
-                      prefs.setString("userId", userData["_id"]);
-                      print(prefs.getString("userId"));*/
+                      prefs.setString("email", _email!);
+
+                      print(prefs.getString("email"));
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Home()));
                     } else if (response.statusCode == 403) {
