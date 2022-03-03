@@ -8,6 +8,9 @@ const multer = require('../middleware/multer-config');
 
 router.get('/:id',userController.getById);
 
+router.get('/',userController.getByEmail);
+
+
 router.post('/', multer.single('Avatar'),userController.createUser);
 
 router.post('/login',userController.login);

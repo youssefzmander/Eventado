@@ -18,6 +18,14 @@ exports.getById = async (req, res) => {
   }
 };
 
+exports.getByEmail =async (req,res)=>{
+  try {
+    const user = await User.find({ email: req.body.email });
+    res.json(user);
+} catch (error) {
+    res.status(500).json({ message: error.message });
+}
+}
 
 
 exports.createUser = async (req, res) => {

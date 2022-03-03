@@ -22,6 +22,8 @@ exports.create = async (req, res) => {
     })
 
     eventRegister = await eventRegister.save();
-    //await eventRegister.populate('Event').populate('user', 'f_name username email').exec();
+   // await eventRegister.populate('event').populate('user', 'f_name username email').exec();
+   await eventRegister.populate('event').populate('participants', 'f_name username email').execPopulate();
+
     res.send(eventRegister)
 }
