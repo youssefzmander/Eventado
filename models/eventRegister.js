@@ -7,10 +7,6 @@ const eventRegisterSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
     event: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'event'
