@@ -51,7 +51,7 @@ class HomeState extends State<Home> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Expanded(child: Text("Full Name"))
+                    const Expanded(child: Text(" Name"))
                   ],
                 )),
             ListTile(

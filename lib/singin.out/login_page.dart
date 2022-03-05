@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LoginPage extends StatelessWidget {
-  var _fname = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +85,7 @@ class _LoginFormState extends State<LoginForm> {
   var _obscureText = true;
   late String? _email;
   late String? _password;
-  late String? _fname;
+
   final String _baseUrl = "10.0.2.2:3001";
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
@@ -181,13 +180,13 @@ class _LoginFormState extends State<LoginForm> {
                     if (response.statusCode == 200) {
                       Map<String, dynamic> userData =
                           json.decode(response.body);
-
+                      print(response.body);
                       //sharedpreferances
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
-                      prefs.setString("email", _email!);
+                      prefs.setString("userId", userData["UserId"]);
 
-                      print(prefs.getString("email"));
+                      prefs.setString("email", _email!);
 
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Home()));

@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pim/UserHome/home.dart';
 import 'package:pim/main.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'Settings.dart';
 
@@ -74,9 +76,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(
                 height: 35,
               ),
-              buildTextField("Full Name", "yesmine khayati", false),
-              buildTextField("E-mail", "yesmineuno@gmail.com", false),
-              buildTextField("Password", "********", true),
+              buildTextFormField("Full Name", "yesmine khayati", false),
+              buildTextFormField("E-mail", "yesmineuno@gmail.com", false),
+              buildTextFormField("Password", "********", true),
               SizedBox(
                 height: 35,
               ),
@@ -84,7 +86,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text("CANCEL",
                         style: TextStyle(
                             fontSize: 14,
@@ -110,7 +114,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget buildTextField(
+  Widget buildTextFormField(
       String labelText, String placeholder, bool isPasswordTextField) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
