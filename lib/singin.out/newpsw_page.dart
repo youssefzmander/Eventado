@@ -17,6 +17,7 @@ class _NewPasswordState extends State<NewPassword> {
   late String? _email;
   late String? _passwd;
   final String _baseUrl = "10.0.2.2:3001";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +42,7 @@ class _NewPasswordState extends State<NewPassword> {
             horizontal: 30,
           ),
           child: Form(
+            key: _keyForm,
             child: Column(
               children: [
                 TextFormField(
@@ -73,7 +75,7 @@ class _NewPasswordState extends State<NewPassword> {
                     }
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 TextFormField(
@@ -84,7 +86,7 @@ class _NewPasswordState extends State<NewPassword> {
                       color: Colors.grey[400],
                     ),
                     suffixIcon: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.visibility,
                         color: Colors.black,
                       ),
@@ -94,16 +96,19 @@ class _NewPasswordState extends State<NewPassword> {
                         });
                       },
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(0.0),
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(0.0),
                       ),
-                      borderSide: new BorderSide(
+                      borderSide: BorderSide(
                         color: Colors.black,
                         width: 1.0,
                       ),
                     ),
                   ),
+                  onSaved: (String? value) {
+                    _passwd = value;
+                  },
                 ),
                 SizedBox(
                   height: 25,
@@ -147,10 +152,11 @@ class _NewPasswordState extends State<NewPassword> {
                       vertical: 10,
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'CONFIRM',
                   ),
                   onPressed: () {
+                    print("tapped");
                     if (_keyForm.currentState!.validate()) {
                       _keyForm.currentState!.save();
                       Map<String, dynamic> userData = {
@@ -162,16 +168,34 @@ class _NewPasswordState extends State<NewPassword> {
                       };
 
                       http
-                          .put(Uri.http(_baseUrl, "/user/editPassword"),
+                          .patch(Uri.http(_baseUrl, "/user/editPassword"),
                               headers: headers, body: json.encode(userData))
-                          .then((http.Response response) async {});
+                          .then((http.Response response) async {
+                        if (response.statusCode == 200) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  title: Text("success"),
+                                  content: Text("Password updated!"),
+                                );
+                              });
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SocialPage()));
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  title: Text("Failed"),
+                                  content: Text("Try Again!"),
+                                );
+                              });
+                        }
+                      });
                     }
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SocialPage(),
-                      ),
-                    );
                   },
                 ),
               ],

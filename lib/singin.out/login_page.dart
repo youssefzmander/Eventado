@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LoginPage extends StatelessWidget {
+  var _fname = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +86,7 @@ class _LoginFormState extends State<LoginForm> {
   var _obscureText = true;
   late String? _email;
   late String? _password;
+  late String? _fname;
   final String _baseUrl = "10.0.2.2:3001";
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
