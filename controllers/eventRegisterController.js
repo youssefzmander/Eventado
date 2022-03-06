@@ -3,6 +3,7 @@ const express = require('express');
 const event = require('../models/event');
 const User = require('../models/user');
 const EventRegister = require('../models/eventRegister');
+const eventRegister = require('../models/eventRegister');
 
 
 
@@ -23,7 +24,9 @@ exports.create = async (req, res) => {
 
     eventRegister = await eventRegister.save();
    // await eventRegister.populate('event').populate('user', 'f_name username email').exec();
-   await eventRegister.populate('event').populate('participants', 'f_name username email').execPopulate();
+   //await eventRegister.populate('event').populate('participants', 'f_name username email').execPopulate();
 
     res.send(eventRegister)
 }
+
+
