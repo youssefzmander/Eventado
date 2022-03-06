@@ -6,8 +6,8 @@ const User = require('../models/user');
 
 exports.getAllEvents = async (req, res) => {
     try {
-        const event = await event.find()
-        res.json(event)
+        const events = await event.find()
+        res.json(events)
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
@@ -15,7 +15,7 @@ exports.getAllEvents = async (req, res) => {
 
 exports.createEvent = async (req, res) => {
 
-    const { name, date, nbrMax, description, /*Affiche*/ } = req.body;
+    const { name, date, nbrMax, description, Affiche } = req.body;
 
     const verifEvent = await event.findOne({ name });
     if (verifEvent) {
@@ -26,7 +26,7 @@ exports.createEvent = async (req, res) => {
         newEvent.date = date;
         newEvent.description=description;
         newEvent.nbrMax=nbrMax;
-        //newEvent.Affiche = "http://localhost:3001/" + req.file.path
+        newEvent.Affiche = "http://localhost:3001/" + req.file.path
         newEvent.save();
         res.status(201).json({ newEvent });
     }

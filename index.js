@@ -23,6 +23,8 @@ const EventRouter = require('./routes/event')
 app.use('/event', EventRouter)
 
 
+
+
 const EventRegisterRouter = require('./routes/eventRegister')
 app.use('/eventRegister', EventRegisterRouter)
 

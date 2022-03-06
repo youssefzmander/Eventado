@@ -9,19 +9,18 @@ const nodemailer = require("nodemailer");
 
 
 exports.getById = async (req, res) => {
-  const user = await User.findOne({ _id: req.body._id });
-
-  if (user) {
-    res.status(200).send({ user });
-  } else {
-    res.status(403).send({ message: "fail" });
-  }
+  User.findById(mongoose.Types.ObjectId(req.params.id)
+  , (err, User) => {
+    res.status(200).json(User);
+    return;
+  });
 };
 
 exports.getByEmail =async (req,res)=>{
   try {
     const user = await User.find({ email: req.body.email });
-    res.json(user);
+  
+    res.status(200).json(user);
 } catch (error) {
     res.status(500).json({ message: error.message });
 }
@@ -30,7 +29,7 @@ exports.getByEmail =async (req,res)=>{
 
 exports.createUser = async (req, res) => {
 
-  const { name, email, password, role } = req.body;
+  const { f_name, username,email, password } = req.body;
 
   const verifUser = await User.findOne({ email });
   if (verifUser) {
@@ -39,11 +38,12 @@ exports.createUser = async (req, res) => {
 
     const newUser = new User();
     mdpEncrypted = await bcrypt.hash(password, 10);
-    newUser.name = name;
+    newUser.f_name = f_name;
+    newUser.username=username;
     newUser.email = email;
     newUser.password = mdpEncrypted;
     newUser.isVerified = false;
-    newUser.role = role;
+    
     //newUser.Avatar =  "http://localhost:3001/" + req.file.path
     const token = jwt.sign({ _id: newUser._id }, "token_secret!!", {
       expiresIn: "60000", // in Milliseconds (3600000 = 1 hour)
@@ -98,7 +98,7 @@ exports.login = async (req, res, next) => {
     if (!user.isVerified) {
       res.status(201).send({ message: "email not verified" });
     } else {
-      res.status(200).send({ token, UserId: user._id });
+      res.status(200).send({ token, UserId: user._id , email:user.email,username:user.username,f_name:user.f_name});
     }
 
   } else {
@@ -248,7 +248,7 @@ exports.resetPassword = async (req, res) => {
     }
   );
 
-  res.send({ user });
+  res.status(200).json({ user });
 }
 
 
