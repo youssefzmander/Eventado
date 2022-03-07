@@ -7,15 +7,21 @@ import 'package:pim/UserHome/home.dart';
 import 'package:pim/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Settings.dart';
 
-class ModifierProfile extends StatelessWidget {
+class ModifierProfile extends StatefulWidget {
+  @override
+  State<ModifierProfile> createState() => _ModifierProfileState();
+}
+
+class _ModifierProfileState extends State<ModifierProfile> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Setting UI",
+      title: "Setting",
       home: EditProfilePage(),
     );
   }
@@ -28,16 +34,42 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool showPassword = false;
+  late String _id;
+
+  late String? _f_name;
+  late String? _username;
+  late String? _email;
+
+  late SharedPreferences prefs;
+
+  final String _baseUrl = "10.0.2.2:3001";
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late Future<bool> fetchedUser;
+  Future<bool> fetchUser() async {
+    prefs = await SharedPreferences.getInstance();
+    _id = prefs.getString("userId")!;
+    _f_name = prefs.getString("f_name")!;
+    _username = prefs.getString("username")!;
+    _email = prefs.getString("email")!;
+
+    return true;
+  }
+
+  @override
+  void initState() {
+    fetchedUser = fetchUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 1,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
-            color: color,
+            color: Colors.black87,
           ),
           onPressed: () {
             Navigator.pushReplacement(
@@ -46,7 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.settings,
               color: color,
             ),
@@ -65,84 +97,141 @@ class _EditProfilePageState extends State<EditProfilePage> {
           },
           child: ListView(
             children: [
-              Text(
+              const Text(
                 "Edit Profile",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               EdiImage(),
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
-              buildTextFormField("Full Name", "yesmine khayati", false),
-              buildTextFormField("E-mail", "yesmineuno@gmail.com", false),
-              buildTextFormField("Password", "********", true),
-              SizedBox(
-                height: 35,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
+              Form(
+                  child: Column(
+                children: <Widget>[
+                  TextFormField(
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        hintText: (_f_name),
+                        helperText: "Full Name",
+                        labelStyle: TextStyle(
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                      onSaved: (String? value) {
+                        _f_name = value;
+                      },
+                      validator: (String? value) {
+                        if (value!.isEmpty || value.length < 8) {
+                          return "Too short !";
+                        } else {
+                          return null;
+                        }
+                      }),
+                  const SizedBox(height: 30),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      hintText: (_email),
+                      helperText: "Email",
+                      labelStyle: TextStyle(
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    onSaved: (String? value) {
+                      _email = value;
                     },
-                    child: const Text("CANCEL",
-                        style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 2.2,
-                            color: Colors.black)),
+                    validator: (String? value) {
+                      RegExp regex = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      if (value!.isEmpty || !regex.hasMatch(value)) {
+                        return "Invalid Email !";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        hintText: (_username),
+                        helperText: "Username",
+                        labelStyle: TextStyle(
+                          color: Colors.grey[400],
+                        ),
+                        border: const OutlineInputBorder()),
+                    onSaved: (String? value) {
+                      _username = value;
+                    },
+                    validator: (String? value) {
+                      if (value!.isEmpty || value.length < 8) {
+                        return "Too short !";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "SAVE",
-                      style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white),
+                    style: ElevatedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      primary: color,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 125,
+                        vertical: 13,
+                      ),
                     ),
-                  )
+                    child: const Text(
+                      'SAVE',
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+
+                        Map<String, dynamic> userData = {
+                          "f_name": _f_name,
+                          "email": _email,
+                          "username": _username,
+                        };
+
+                        Map<String, String> headers = {
+                          "Content-Type": "application/json; charset=UTF-8"
+                        };
+                        http
+                            .put(Uri.http(_baseUrl, "/user" + _id),
+                                headers: headers, body: json.encode(userData))
+                            .then((http.Response response) {
+                          if (response.statusCode == 201) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ),
+                            );
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext) {
+                                  return const AlertDialog(
+                                    title: Text("Information"),
+                                    content: Text(
+                                        "An error has occurred. Try Again"),
+                                  );
+                                });
+                          }
+                        });
+                      }
+                    },
+                  ),
                 ],
-              )
+              )),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildTextFormField(
-      String labelText, String placeholder, bool isPasswordTextField) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        obscureText: isPasswordTextField ? showPassword : false,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword = !showPassword;
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.grey,
-                    ),
-                  )
-                : null,
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            )),
       ),
     );
   }
@@ -171,7 +260,7 @@ class _EditImageProfileState extends State<EdiImage> {
                   height: 160,
                   fit: BoxFit.cover,
                 ))
-              : CircleAvatar(
+              : const CircleAvatar(
                   radius: 80.0,
                   backgroundImage: AssetImage("assets/images/user.jpg"),
                 ),
@@ -183,7 +272,7 @@ class _EditImageProfileState extends State<EdiImage> {
                   showModalBottomSheet(
                       context: context, builder: ((Builder) => bottomSheet()));
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.edit,
                   color: color,
                   size: 28.0,
@@ -204,7 +293,7 @@ class _EditImageProfileState extends State<EdiImage> {
       ),
       child: Column(
         children: <Widget>[
-          Text(
+          const Text(
             "choose Profile Photo",
             style: TextStyle(fontSize: 20.0),
           ),
@@ -218,14 +307,14 @@ class _EditImageProfileState extends State<EdiImage> {
                   onPressed: () {
                     takePhoto(ImageSource.camera);
                   },
-                  icon: Icon(Icons.camera),
+                  icon: const Icon(Icons.camera),
                   label: Text("Camera")),
               TextButton.icon(
                   onPressed: () {
                     takePhoto(ImageSource.gallery);
                   },
-                  icon: Icon(Icons.image),
-                  label: Text("Gallery"))
+                  icon: const Icon(Icons.image),
+                  label: const Text("Gallery"))
             ],
           )
         ],

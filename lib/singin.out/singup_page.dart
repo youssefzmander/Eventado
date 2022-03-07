@@ -62,7 +62,7 @@ class SinupForm extends StatefulWidget {
 class _SinupFormFormState extends State<SinupForm> {
   var _obscureText = true;
   bool role = false;
-  late String? _name;
+  late String? _f_name;
   late String? _username;
   late String? _email;
   late String? _pwd;
@@ -91,7 +91,7 @@ class _SinupFormFormState extends State<SinupForm> {
                   ),
                 ),
                 onSaved: (String? value) {
-                  _name = value;
+                  _f_name = value;
                 },
                 validator: (String? value) {
                   if (value!.isEmpty || value.length < 8) {
@@ -251,7 +251,7 @@ class _SinupFormFormState extends State<SinupForm> {
                   _formKey.currentState!.save();
 
                   Map<String, dynamic> userData = {
-                    "name": _name,
+                    "f_name": _f_name,
                     "email": _email,
                     "username": _username,
                     "password": _pwd,

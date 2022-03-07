@@ -8,17 +8,18 @@ import '../drawer_widgets/Settings.dart';
 import '../drawer_widgets/bookmark.dart';
 import '../drawer_widgets/messages.dart';
 import '../main.dart';
-class AdminHome extends StatefulWidget{
+import 'package:shared_preferences/shared_preferences.dart';
+
+class AdminHome extends StatefulWidget {
   const AdminHome({Key? key}) : super(key: key);
   @override
-  AdminHomeState  createState() => AdminHomeState();
-
+  AdminHomeState createState() => AdminHomeState();
 }
 
-class AdminHomeState   extends State<AdminHome>{
+class AdminHomeState extends State<AdminHome> {
   int currentIndex = 0;
   final screens = [
-  Explore(),
+    Explore(),
     Notificationspage(),
     Messages(),
     Create(),
@@ -28,80 +29,104 @@ class AdminHomeState   extends State<AdminHome>{
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor:  color,
+        backgroundColor: color,
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-                decoration: const BoxDecoration(color: color,
+                decoration: const BoxDecoration(
+                  color: color,
                 ),
                 child: Row(
                   children: <Widget>[
-                    Expanded(child: Image.asset("assets/images/user.jpg",height: 100,width: 100,)
+                    Expanded(
+                        child: Image.asset(
+                      "assets/images/user.jpg",
+                      height: 100,
+                      width: 100,
+                    )),
+                    const SizedBox(
+                      width: 10,
                     ),
-                    const SizedBox(width: 10,),
-                    const Expanded(child: Text("Full Name"))
+                    Expanded(child: Text("Full Name"))
                   ],
-                )
-            ),
+                )),
             ListTile(
               leading: const Icon(Icons.account_circle_outlined),
               title: const Text("My Profile"),
-              onTap:() {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=>Profile(),
-                    )
-                );
-              },
-            ),
-            const SizedBox(height: 20,),
-            ListTile(
-              leading: const  Icon(Icons.message_outlined),
-              title: const Text("Message"),
-              onTap:() {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> Messages(),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Profile(),
                     ));
               },
-
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
+            ListTile(
+              leading: const Icon(Icons.message_outlined),
+              title: const Text("Message"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Messages(),
+                    ));
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             ListTile(
               leading: const Icon(Icons.bookmark),
               title: const Text("BookMark"),
-              onTap:() {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> Eventslist(),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Eventslist(),
                     ));
               },
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text("Seetings"),
-              onTap:() {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> Settings(),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Settings(),
                     ));
               },
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
-              title:const Text("Sign Out"),
-              onTap:() {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> MyApp(),
-                    )
-                );
+              title: const Text("Sign Out"),
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('userId');
+                prefs.remove('username');
+                prefs.remove('f_name');
+                prefs.remove('email');
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyApp(),
+                    ));
               },
             ),
-
           ],
         ),
-
       ),
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -110,19 +135,31 @@ class AdminHomeState   extends State<AdminHome>{
         onTap: (index) => setState(() => currentIndex = index),
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.explore, ),
+            icon: Icon(
+              Icons.explore,
+            ),
             label: "Explore",
-            backgroundColor: color,),
+            backgroundColor: color,
+          ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications, ),
+            icon: Icon(
+              Icons.notifications,
+            ),
             label: "Notification",
-            backgroundColor: color,),
+            backgroundColor: color,
+          ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_sharp,),
-            label: "message",),
+            icon: Icon(
+              Icons.calendar_today_sharp,
+            ),
+            label: "message",
+          ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_sharp,),
-            label: " create",),
+            icon: Icon(
+              Icons.add_box_sharp,
+            ),
+            label: " create",
+          ),
         ],
       ),
     );

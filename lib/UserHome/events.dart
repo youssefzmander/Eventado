@@ -21,13 +21,16 @@ class _EventsState extends State<Events> {
     http.Response response = await http.get(Uri.http(_baseUrl, "/event"));
 
     List<dynamic> eventsFromServer = json.decode(response.body);
-
     for (int i = 0; i < eventsFromServer.length; i++) {
       _events.add(EventsData(
         eventsFromServer[i]["_id"],
         eventsFromServer[i]["name"],
+        eventsFromServer[i]["date"],
+        eventsFromServer[i]["description"],
+        eventsFromServer[i]["nbrMax"].toString(),
       ));
     }
+    print(eventsFromServer);
 
     return true;
   }
@@ -44,16 +47,12 @@ class _EventsState extends State<Events> {
       future: _fetchedEvents,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData) {
-          return GridView.builder(
+          return ListView.builder(
             itemCount: _events.length,
             itemBuilder: (BuildContext context, int index) {
-              return EventInfo(_events[index].name);
+              return EventInfo(_events[index].name, _events[index].date,
+                  _events[index].description, _events[index].nbrMax);
             },
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: 120,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5),
           );
         } else {
           return const Center(
@@ -68,11 +67,14 @@ class _EventsState extends State<Events> {
 class EventsData {
   final String id;
   final String name;
+  final String date;
+  final String description;
+  final String nbrMax;
 
-  EventsData(this.id, this.name);
+  EventsData(this.id, this.name, this.date, this.description, this.nbrMax);
 
   @override
   String toString() {
-    return 'EventsData{id: $id, name: $name}';
+    return 'EventsData{id: $id, name: $name, date: $date, description: $description, nbrMax: $nbrMax}';
   }
 }

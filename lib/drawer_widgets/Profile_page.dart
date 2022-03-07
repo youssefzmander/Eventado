@@ -93,7 +93,8 @@ class _ProfileState extends State<Profile> {
                   ),
                   Text(
                     (_email),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 20,
@@ -121,7 +122,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 18,
                       ),
                       ElevatedButton(
