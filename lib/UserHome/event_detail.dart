@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class ProductDetails extends StatefulWidget {
   const ProductDetails();
 
@@ -15,6 +18,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   late String _description;
   late String _nbrMax;
   late SharedPreferences prefs;
+  final String _baseUrl = "10.0.2.2:3001";
 
   late Future<bool> fetchedUser;
 
@@ -68,7 +72,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                   "Buy ticket",
                   textScaleFactor: 1.5,
                 ),
-                onPressed: () {}),
+                onPressed: () async {
+                  http.Response response =
+                      await http.get(Uri.http(_baseUrl, "/create-charge"));
+                }),
           );
         } else {
           return const Scaffold(

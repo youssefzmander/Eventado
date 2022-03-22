@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pim/UserHome/home.dart';
-import 'package:pim/UserHome/paiement-page.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
@@ -190,11 +189,7 @@ class _CreateFormFormState extends State<CreateForm> {
                           headers: headers, body: json.encode(eventData))
                       .then((http.Response response) {
                     if (response.statusCode == 201) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Home(),
-                          ));
+                      print("cbonnnnnnnn");
                     }
                   });
                 }

@@ -54,7 +54,7 @@ class Verifier extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Home(),
+                      builder: (context) => MyHomePage(),
                     ),
                   );
                 },

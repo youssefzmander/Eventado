@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../main.dart';
 import '../singin.out/login_page.dart';
+
 class changepaswrd extends StatefulWidget {
   @override
   _changepaswrdState createState() => _changepaswrdState();
 }
-class _changepaswrdState extends State<changepaswrd>{
+
+class _changepaswrdState extends State<changepaswrd> {
   var _obscureText = true;
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,6 @@ class _changepaswrdState extends State<changepaswrd>{
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
-
         leading: IconButton(
           icon: Icon(
             Icons.close,
@@ -29,7 +30,8 @@ class _changepaswrdState extends State<changepaswrd>{
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.symmetric(
-            vertical: 100,horizontal: 30,
+            vertical: 100,
+            horizontal: 30,
           ),
           child: Column(
             children: [
@@ -37,20 +39,23 @@ class _changepaswrdState extends State<changepaswrd>{
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   hintText: "your password",
-                  labelStyle: TextStyle(color: Colors.grey[400],
+                  labelStyle: TextStyle(
+                    color: Colors.grey[400],
                   ),
-                  suffixIcon:IconButton(icon: Icon(
-                    Icons.visibility,
-                    color: Colors.black,
-                  ),
-                    onPressed: () { setState(() {
-                      _obscureText = !_obscureText;
-                    }); },
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.visibility,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
                   border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(
                       const Radius.circular(0.0),
-
                     ),
                     borderSide: new BorderSide(
                       color: Colors.black,
@@ -59,25 +64,30 @@ class _changepaswrdState extends State<changepaswrd>{
                   ),
                 ),
               ),
-              SizedBox(height: 25,),
+              SizedBox(
+                height: 25,
+              ),
               TextField(
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   hintText: "new password",
-                  labelStyle: TextStyle(color: Colors.grey[400],
+                  labelStyle: TextStyle(
+                    color: Colors.grey[400],
                   ),
-                  suffixIcon:IconButton(icon: Icon(
-                    Icons.visibility,
-                    color: Colors.black,
-                  ),
-                    onPressed: () { setState(() {
-                      _obscureText = !_obscureText;
-                    }); },
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.visibility,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
                   border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(
                       const Radius.circular(0.0),
-
                     ),
                     borderSide: new BorderSide(
                       color: Colors.black,
@@ -85,29 +95,31 @@ class _changepaswrdState extends State<changepaswrd>{
                     ),
                   ),
                 ),
-
-
               ),
-
-              SizedBox(height: 25,),
+              SizedBox(
+                height: 25,
+              ),
               TextField(
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   hintText: "confirm password",
-                  labelStyle: TextStyle(color: Colors.grey[400],
+                  labelStyle: TextStyle(
+                    color: Colors.grey[400],
                   ),
-                  suffixIcon:IconButton(icon: Icon(
-                    Icons.visibility,
-                    color: Colors.black,
-                  ),
-                    onPressed: () { setState(() {
-                      _obscureText = !_obscureText;
-                    }); },
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.visibility,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
                   border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(
                       const Radius.circular(0.0),
-
                     ),
                     borderSide: new BorderSide(
                       color: Colors.black,
@@ -115,8 +127,6 @@ class _changepaswrdState extends State<changepaswrd>{
                     ),
                   ),
                 ),
-
-
               ),
               SizedBox(height: 30),
               ElevatedButton(
@@ -131,14 +141,7 @@ class _changepaswrdState extends State<changepaswrd>{
                 child: Text(
                   'CONFIRM',
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
-                },
+                onPressed: () {},
               ),
             ],
           ),
@@ -146,5 +149,4 @@ class _changepaswrdState extends State<changepaswrd>{
       ),
     );
   }
-
 }

@@ -1,160 +1,202 @@
 import 'package:flutter/material.dart';
-import 'package:pim/UserHome/create_events_page.dart';
-import 'package:pim/UserHome/events.dart';
-import 'package:pim/UserHome/explore.dart';
-import 'package:pim/UserHome/notification.dart';
-import 'package:pim/drawer_widgets/Settings.dart';
-import 'package:pim/drawer_widgets/messages.dart';
-import '../drawer_widgets/Profile_page.dart';
-import '../drawer_widgets/bookmark.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pim/event_detail_page.dart';
+
+import 'package:pim/widgets/home_bg_color.dart';
+import '../constant/text_style.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
+import '../models/event_model.dart';
+import '../utils/app_utils.dart';
+import '../widgets/bottom_navigation_bar.dart';
+import '../widgets/nearby_event_card.dart';
+import '../widgets/ui_helper.dart';
+import '../widgets/upcoming_event_card.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
-  HomeState createState() => HomeState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class HomeState extends State<Home> {
-  int currentIndex = 0;
-  final screens = [
-    Explore(),
-    Notificationspage(),
-    Events(),
-    Create(),
-  ];
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  int _currentIndex = 0;
+  late ScrollController scrollController;
+  late AnimationController controller;
+  late AnimationController opacityController;
+  late Animation<double> opacity;
+
+  void viewEventDetail(Event event) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: true,
+        transitionDuration: const Duration(milliseconds: 300),
+        pageBuilder: (BuildContext context, animation, __) {
+          return FadeTransition(
+            opacity: animation,
+            child: EventDetailPage(event),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+          ..forward();
+    opacityController = AnimationController(
+        vsync: this, duration: const Duration(microseconds: 1));
+    opacity = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(
+      curve: Curves.linear,
+      parent: opacityController,
+    ));
+    scrollController.addListener(() {
+      opacityController.value = offsetToOpacity(
+          currentOffset: scrollController.offset,
+          maxOffset: scrollController.position.maxScrollExtent / 2);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    scrollController.dispose();
+    opacityController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: color,
+      body: Stack(
+        children: <Widget>[
+          HomeBackgroundColor(opacity),
+          SingleChildScrollView(
+            controller: scrollController,
+            padding: const EdgeInsets.only(top: 100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                buildSearchAppBar(),
+                UIHelper.verticalSpace(16),
+                buildUpComingEventList(),
+                UIHelper.verticalSpace(16),
+                buildNearbyConcerts(),
+              ],
+            ),
+          ),
+        ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: color,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Image.asset(
-                      "assets/images/user.jpg",
-                      height: 100,
-                      width: 100,
-                    )),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Expanded(child: Text(" Name"))
-                  ],
-                )),
-            ListTile(
-              leading: const Icon(Icons.account_circle_outlined),
-              title: const Text("My Profile"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Profile(),
-                    ));
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ListTile(
-              leading: const Icon(Icons.message_outlined),
-              title: const Text("Message"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Messages(),
-                    ));
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ListTile(
-              leading: const Icon(Icons.bookmark),
-              title: const Text("BookMark"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Eventslist(),
-                    ));
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text("Seetings"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Settings(),
-                    ));
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text("Sign Out"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyApp(),
-                    ));
-              },
-            ),
-          ],
+      bottomNavigationBar: HomePageButtonNavigationBar(
+        onTap: (index) => setState(() => _currentIndex = index),
+        currentIndex: _currentIndex,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(FontAwesomeIcons.qrcode),
+      ),
+    );
+  }
+
+  Widget buildSearchAppBar() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: TextField(
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          hintText: "Search...",
+          hintStyle: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+          border:
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          enabledBorder:
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          focusedBorder:
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         ),
       ),
-      body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.white,
-        currentIndex: currentIndex,
-        onTap: (index) => setState(() => currentIndex = index),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.explore,
+    );
+  }
+
+  Widget buildUpComingEventList() {
+    return Container(
+      padding: const EdgeInsets.only(left: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Upcoming Events",
+              style: headerStyle.copyWith(color: Colors.white)),
+          UIHelper.verticalSpace(16),
+          SizedBox(
+            height: 250,
+            child: ListView.builder(
+              itemCount: upcomingEvents.length,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final event = upcomingEvents[index];
+                return UpComingEventCard(
+                    event: event, onTap: () => viewEventDetail(event));
+              },
             ),
-            label: "Explore",
-            backgroundColor: color,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.notifications,
-            ),
-            label: "Notification",
-            backgroundColor: color,
+        ],
+      ),
+    );
+  }
+
+  Widget buildNearbyConcerts() {
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const Text("Recommendations", style: headerStyle),
+              const Spacer(),
+              const Icon(Icons.more_horiz),
+              UIHelper.horizontalSpace(16),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.calendar_today_sharp,
-            ),
-            label: "events",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_box_sharp,
-            ),
-            label: " create",
+          ListView.builder(
+            itemCount: nearbyEvents.length,
+            shrinkWrap: true,
+            primary: false,
+            itemBuilder: (context, index) {
+              final event = nearbyEvents[index];
+              var animation = Tween<double>(begin: 800.0, end: 0.0).animate(
+                CurvedAnimation(
+                  parent: controller,
+                  curve: Interval((1 / nearbyEvents.length) * index, 1.0,
+                      curve: Curves.decelerate),
+                ),
+              );
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) => Transform.translate(
+                  offset: Offset(animation.value, 0.0),
+                  child: NearbyEventCard(
+                    event: event,
+                    onTap: () => viewEventDetail(event),
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

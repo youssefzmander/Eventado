@@ -36,9 +36,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool showPassword = false;
   late String _id;
 
-  late String? _f_name;
-  late String? _username;
-  late String? _email;
+  String? _f_name;
+  String? _username;
+  String? _email;
 
   late SharedPreferences prefs;
 
@@ -73,7 +73,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           onPressed: () {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Home()));
+                context, MaterialPageRoute(builder: (context) => MyHomePage()));
           },
         ),
         actions: [
@@ -209,7 +209,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Home(),
+                                builder: (context) => MyHomePage(),
                               ),
                             );
                           } else {

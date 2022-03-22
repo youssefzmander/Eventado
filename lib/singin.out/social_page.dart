@@ -5,7 +5,6 @@ import '../main.dart';
 import '../UserHome/home.dart';
 import 'login_page.dart';
 
-
 class SocialPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,13 +28,6 @@ class SocialPage extends StatelessWidget {
           children: [
             Image.asset('assets/images/logo.png'),
             const SizedBox(height: 10),
-            const Text(
-              "Sing in",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
             const SizedBox(height: 15),
             LoginForm(),
             Align(
@@ -70,20 +62,6 @@ class SocialPage extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
-                children: const [
-                  Text(
-                    "Or login with",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Container(
               margin: const EdgeInsets.symmetric(
                 vertical: 14,
@@ -92,43 +70,7 @@ class SocialPage extends StatelessWidget {
               child: Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      primary: color,
-                      padding: const EdgeInsets.all(13),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.mail_outline_outlined),
-                        SizedBox(width: 10),
-                        Text(
-                          'EMAIL',
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       primary: const Color(0xFF576dff),
@@ -150,14 +92,7 @@ class SocialPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginPage(),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         primary: Colors.white,
