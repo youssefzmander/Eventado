@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pim/drawer_widgets/Profile_page.dart';
 import 'package:pim/event_detail_page.dart';
 
 import 'package:pim/widgets/home_bg_color.dart';
@@ -20,6 +20,9 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+
+late int _currentIndex = 0;
+final List<Widget> _interfaces = const [MyHomePage()];
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   int _currentIndex = 0;
@@ -84,7 +87,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                buildSearchAppBar(),
                 UIHelper.verticalSpace(16),
                 buildUpComingEventList(),
                 UIHelper.verticalSpace(16),
@@ -102,27 +104,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: const Icon(FontAwesomeIcons.qrcode),
-      ),
-    );
-  }
-
-  Widget buildSearchAppBar() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: TextField(
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          hintText: "Search...",
-          hintStyle: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
-          border:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-          enabledBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-          focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        ),
+        child: const Icon(Icons.qr_code),
       ),
     );
   }

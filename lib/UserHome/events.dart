@@ -47,16 +47,31 @@ class _EventsState extends State<Events> {
       future: _fetchedEvents,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: _events.length,
-            itemBuilder: (BuildContext context, int index) {
-              return EventInfo(_events[index].name, _events[index].date,
-                  _events[index].description, _events[index].nbrMax);
-            },
-          );
+          return Scaffold(
+              appBar: AppBar(
+                elevation: 0,
+                title: const Text("My Events"),
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              body: ListView.builder(
+                itemCount: _events.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return EventInfo(_events[index].name, _events[index].date,
+                      _events[index].description, _events[index].nbrMax);
+                },
+              ));
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         }
       },

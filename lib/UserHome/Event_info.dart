@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pim/widgets/ui_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constant/text_style.dart';
 import 'event_detail.dart';
 
 class EventInfo extends StatelessWidget {
@@ -31,13 +33,23 @@ class EventInfo extends StatelessWidget {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
               child: Image.asset("assets/images/Capture.PNG",
-                  width: 200, height: 94),
+                  width: 100, height: 94),
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_name),
+              children: <Widget>[
+                Text(_date, style: monthStyle),
+                UIHelper.verticalSpace(8),
+                Text(_name, style: titleStyle),
+                UIHelper.verticalSpace(8),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.people),
+                    UIHelper.horizontalSpace(4),
+                    Text(_nbrMax.toUpperCase(), style: subtitleStyle),
+                  ],
+                ),
               ],
             )
           ],

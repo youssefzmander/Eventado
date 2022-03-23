@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pim/UserHome/events.dart';
+import 'package:pim/UserHome/home.dart';
+import 'package:pim/drawer_widgets/Profile_page.dart';
 
-class HomePageButtonNavigationBar extends StatefulWidget {
+class HomePageButtonNavigationBar extends StatelessWidget {
   final Function(int) onTap;
   final int currentIndex;
-  const HomePageButtonNavigationBar(
+  HomePageButtonNavigationBar(
       {Key? key, required this.currentIndex, required this.onTap})
       : super(key: key);
 
   @override
-  State<HomePageButtonNavigationBar> createState() =>
-      _HomePageButtonNavigationBarState();
-}
-
-class _HomePageButtonNavigationBarState
-    extends State<HomePageButtonNavigationBar> {
-  @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      onTap: widget.onTap,
-      currentIndex: widget.currentIndex,
+      onTap: (index) {
+        if (index == 0)
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MyHomePage()));
+
+        if (index == 1)
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Events()));
+        ;
+        if (index == 2)
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Profile()));
+      },
+      currentIndex: currentIndex,
       selectedItemColor: Theme.of(context).primaryColor,
       type: BottomNavigationBarType.fixed,
       items: const [
@@ -29,15 +36,15 @@ class _HomePageButtonNavigationBarState
         ),
         BottomNavigationBarItem(
           label: "My Events",
-          icon: Icon(Icons.access_alarms),
-        ),
-        BottomNavigationBarItem(
-          label: "Ticket",
-          icon: Icon(FontAwesomeIcons.ticketAlt),
+          icon: Icon(Icons.event),
         ),
         BottomNavigationBarItem(
           label: "Profile",
           icon: Icon(Icons.person),
+        ),
+        BottomNavigationBarItem(
+          label: "Notifications",
+          icon: Icon(Icons.notifications),
         ),
       ],
     );
