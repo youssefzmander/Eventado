@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pim/drawer_widgets/Profile_page.dart';
+import 'package:pim/drawer_widgets/messages.dart';
 import 'package:pim/event_detail_page.dart';
 
 import 'package:pim/widgets/home_bg_color.dart';
@@ -103,8 +104,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.qr_code),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Messages()));
+        },
+        child: const Icon(Icons.message),
       ),
     );
   }

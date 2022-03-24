@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pim/utils/size_config.dart';
 import 'singin.out/welcome_page.dart';
 
 const color = const Color(0xFF6666ff);

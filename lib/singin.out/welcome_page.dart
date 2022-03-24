@@ -3,10 +3,12 @@ import 'package:pim/singin.out/social_page.dart';
 
 import '../delayedAnimation.dart';
 import '../main.dart';
+import '../utils/size_config.dart';
 
 class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Color(0xFFEDECF2),
       body: SingleChildScrollView(

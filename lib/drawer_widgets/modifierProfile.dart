@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pim/UserHome/home.dart';
+import 'package:pim/drawer_widgets/Profile_page.dart';
 import 'package:pim/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/size_config.dart';
 import 'Settings.dart';
 
 class ModifierProfile extends StatefulWidget {
@@ -69,11 +71,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
-            color: Colors.black87,
           ),
           onPressed: () {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                context, MaterialPageRoute(builder: (context) => Profile()));
           },
         ),
         actions: [
@@ -97,17 +98,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
           },
           child: ListView(
             children: [
-              const Text(
-                "Edit Profile",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
+              Text("Modify your Profile", style: headingStyle),
               const SizedBox(
                 height: 15,
               ),
-              EdiImage(),
-              const SizedBox(
-                height: 35,
+              Text(
+                "Your account is already verified",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption,
               ),
+              SizedBox(height: SizeConfig.screenHeight * 0.03),
               Form(
                   child: Column(
                 children: <Widget>[
@@ -115,9 +115,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         hintText: (_f_name),
+                        icon: Icon(Icons.person),
                         helperText: "Full Name",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelStyle: TextStyle(
-                          color: Colors.grey[400],
+                          color: Color.fromARGB(255, 3, 29, 116),
                         ),
                       ),
                       onSaved: (String? value) {
@@ -136,6 +138,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       border: const OutlineInputBorder(),
                       hintText: (_email),
                       helperText: "Email",
+                      icon: Icon(Icons.email),
                       labelStyle: TextStyle(
                         color: Colors.grey[400],
                       ),
@@ -153,10 +156,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       }
                     },
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 25),
                   TextFormField(
                     decoration: InputDecoration(
                         hintText: (_username),
+                        icon: Icon(Icons.nordic_walking_sharp),
                         helperText: "Username",
                         labelStyle: TextStyle(
                           color: Colors.grey[400],
@@ -172,6 +176,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         return null;
                       }
                     },
+                  ),
+                  const SizedBox(height: 25),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        hintText: ("0000000000000"),
+                        icon: Icon(Icons.account_balance_wallet_rounded),
+                        helperText: "Wallet_address",
+                        labelStyle: TextStyle(
+                          color: Colors.grey[400],
+                        ),
+                        border: const OutlineInputBorder()),
+                    onSaved: (String? value) {},
                   ),
                   const SizedBox(
                     height: 20,
