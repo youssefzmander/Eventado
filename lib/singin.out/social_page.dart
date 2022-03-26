@@ -15,8 +15,6 @@ class SocialPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
-            color: Colors.black,
-            size: 30,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -26,9 +24,9 @@ class SocialPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset('assets/images/logo.png'),
+            Image.network(
+                'https://imgs.search.brave.com/zUUR-SWKhhUkJSI57fwj0HzhvIzGCb66bR0NdweH4u0/rs:fit:474:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC5L/VGw5clIzTXVqZ3BC/eVpWcktWQk1nSGFI/YSZwaWQ9QXBp'),
             const SizedBox(height: 10),
-            const SizedBox(height: 15),
             LoginForm(),
             Align(
               alignment: Alignment.centerRight,
@@ -37,7 +35,11 @@ class SocialPage extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     const Expanded(
-                      child: Text("Forget your Password"),
+                      child: Text("Forget your Password",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: "Poppins-Bold",
+                              letterSpacing: .6)),
                     ),
                     Expanded(
                       child: TextButton(
@@ -144,7 +146,7 @@ class SocialPage extends StatelessWidget {
                         child: const Text(
                           "sing up",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import '../main.dart';
 import 'avatr_page.dart';
 import 'package:http/http.dart' as http;
@@ -35,12 +34,59 @@ class SingUp extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: const [
                   Text(
-                    "Sing Up",
+                    "Register Account",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   )
+                ],
+              ),
+            ),
+            const Text(
+              "Complete your details or continue \nwith social media",
+              textAlign: TextAlign.center,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(
+                vertical: 14,
+                horizontal: 40,
+              ),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      primary: const Color(0xFF576dff),
+                      padding: const EdgeInsets.all(13),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.facebook),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        primary: Color.fromARGB(255, 255, 255, 255),
+                        padding: const EdgeInsets.all(13),
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                        )),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/google.jpg',
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -84,7 +130,7 @@ class _SinupFormFormState extends State<SinupForm> {
           children: <Widget>[
             TextFormField(
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
+                  border: const UnderlineInputBorder(),
                   labelText: "Full Name",
                   labelStyle: TextStyle(
                     color: Colors.grey[400],
@@ -103,7 +149,7 @@ class _SinupFormFormState extends State<SinupForm> {
             const SizedBox(height: 30),
             TextFormField(
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: const UnderlineInputBorder(),
                 labelText: "abc@email.com",
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
@@ -129,7 +175,7 @@ class _SinupFormFormState extends State<SinupForm> {
                   labelStyle: TextStyle(
                     color: Colors.grey[400],
                   ),
-                  border: const OutlineInputBorder()),
+                  border: const UnderlineInputBorder()),
               onSaved: (String? value) {
                 _username = value;
               },
@@ -145,7 +191,7 @@ class _SinupFormFormState extends State<SinupForm> {
             TextFormField(
               obscureText: _obscureText,
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: const UnderlineInputBorder(),
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
                 ),
@@ -177,7 +223,7 @@ class _SinupFormFormState extends State<SinupForm> {
             TextFormField(
               obscureText: _obscureText,
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: const UnderlineInputBorder(),
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
                 ),
@@ -198,42 +244,6 @@ class _SinupFormFormState extends State<SinupForm> {
             const SizedBox(
               height: 20,
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Row(
-                  children: <Widget>[
-                    const Expanded(
-                      child: Text(
-                        " SingUp as an admin",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: FlutterSwitch(
-                        width: 75.0,
-                        height: 35.0,
-                        valueFontSize: 25.0,
-                        toggleSize: 20,
-                        toggleColor: color,
-                        borderRadius: 30.0,
-                        padding: 8.0,
-                        value: role,
-                        onToggle: (val) {
-                          setState(() {
-                            role = val;
-                          });
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: const StadiumBorder(),
@@ -244,7 +254,7 @@ class _SinupFormFormState extends State<SinupForm> {
                 ),
               ),
               child: const Text(
-                'suivant',
+                'CONTINUE',
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {

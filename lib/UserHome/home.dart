@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pim/drawer_widgets/Profile_page.dart';
 import 'package:pim/drawer_widgets/messages.dart';
 import 'package:pim/event_detail_page.dart';
 
 import 'package:pim/widgets/home_bg_color.dart';
 import '../constant/text_style.dart';
+import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/event_model.dart';
 import '../utils/app_utils.dart';
@@ -24,6 +24,31 @@ class MyHomePage extends StatefulWidget {
 
 late int _currentIndex = 0;
 final List<Widget> _interfaces = const [MyHomePage()];
+
+final String _baseUrl = "10.0.2.2:3001";
+
+late Future<bool> _fetchedEvents;
+
+Future<bool> fetchEvents() async {
+  http.Response response = await http.get(Uri.http(_baseUrl, "/event"));
+
+  List<dynamic> eventsFromServer = json.decode(response.body);
+  for (int i = 0; i < eventsFromServer.length; i++) {
+    //if (eventsFromServer[i]["name"] != eventsFromServer[i + 1]["name"])
+    upcomingEvents.add(Event(
+        description: eventsFromServer[i]["description"],
+        eventDate: eventsFromServer[i]["date"],
+        image:
+            'https://imgs.search.brave.com/Q3o3M6b6AzmVMmCUbOmHeA__FwUzWo9DVd8LHGNhwFk/rs:fit:704:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC5f/cVRLTmtJLWJIQkFZ/ZWI4QnlpX05nSGFF/XyZwaWQ9QXBp',
+        location: 'Tunisia',
+        name: eventsFromServer[i]["name"],
+        organizer: eventsFromServer[i]["organizer"],
+        price: eventsFromServer[i]["Price"]));
+  }
+  print(eventsFromServer);
+
+  return true;
+}
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   int _currentIndex = 0;
@@ -66,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           maxOffset: scrollController.position.maxScrollExtent / 2);
     });
     super.initState();
+    _fetchedEvents = fetchEvents();
   }
 
   @override

@@ -9,9 +9,11 @@ class EventInfo extends StatelessWidget {
   final String _name;
   final String _date;
   final String _description;
-  final String _nbrMax;
+  final String _price;
+  final String _organizer;
 
-  const EventInfo(this._name, this._date, this._description, this._nbrMax);
+  const EventInfo(
+      this._name, this._date, this._description, this._price, this._organizer);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,9 @@ class EventInfo extends StatelessWidget {
           prefs.setString("eventName", _name);
           prefs.setString("eventDate", _date);
           prefs.setString("eventDescription", _description);
-          prefs.setString("eventNbrMax", _nbrMax);
+          prefs.setString("eventPrice", _price);
+          prefs.setString("eventOrg", _organizer);
+
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) {
             return ProductDetails();
@@ -45,13 +49,13 @@ class EventInfo extends StatelessWidget {
                 UIHelper.verticalSpace(8),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.people),
+                    Icon(Icons.price_change_rounded),
                     UIHelper.horizontalSpace(4),
-                    Text(_nbrMax.toUpperCase(), style: subtitleStyle),
+                    Text(_price.toUpperCase(), style: subtitleStyle),
                   ],
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

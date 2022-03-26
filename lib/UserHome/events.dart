@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:pim/widgets/bottom_navigation_bar.dart';
 import 'dart:convert';
 
 import 'Event_info.dart';
@@ -12,7 +13,7 @@ class Events extends StatefulWidget {
 
 class _EventsState extends State<Events> {
   final List<EventsData> _events = [];
-
+  late int _currentIndex = 0;
   final String _baseUrl = "10.0.2.2:3001";
 
   late Future<bool> _fetchedEvents;
@@ -27,7 +28,8 @@ class _EventsState extends State<Events> {
         eventsFromServer[i]["name"],
         eventsFromServer[i]["date"],
         eventsFromServer[i]["description"],
-        eventsFromServer[i]["nbrMax"].toString(),
+        eventsFromServer[i]["Price"].toString(),
+        eventsFromServer[i]["organizer"],
       ));
     }
     print(eventsFromServer);
@@ -47,6 +49,7 @@ class _EventsState extends State<Events> {
       future: _fetchedEvents,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData) {
+          int _currentIndex;
           return Scaffold(
               appBar: AppBar(
                 elevation: 0,
@@ -63,9 +66,18 @@ class _EventsState extends State<Events> {
               body: ListView.builder(
                 itemCount: _events.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return EventInfo(_events[index].name, _events[index].date,
-                      _events[index].description, _events[index].nbrMax);
+                  return EventInfo(
+                      _events[index].name,
+                      _events[index].date,
+                      _events[index].description,
+                      _events[index].price,
+                      _events[index].organizer);
                 },
+              ),
+              bottomNavigationBar: HomePageButtonNavigationBar(
+                onTap: (index) => setState(() => _currentIndex = index),
+                currentIndex: 1,
+                //currentIndex: _currentIndex,
               ));
         } else {
           return const Scaffold(
@@ -84,12 +96,14 @@ class EventsData {
   final String name;
   final String date;
   final String description;
-  final String nbrMax;
+  final String price;
+  final String organizer;
 
-  EventsData(this.id, this.name, this.date, this.description, this.nbrMax);
+  EventsData(this.id, this.name, this.date, this.description, this.price,
+      this.organizer);
 
   @override
   String toString() {
-    return 'EventsData{id: $id, name: $name, date: $date, description: $description, nbrMax: $nbrMax}';
+    return 'EventsData{id: $id, name: $name, date: $date, description: $description, Price: $price,organizer:$organizer}';
   }
 }

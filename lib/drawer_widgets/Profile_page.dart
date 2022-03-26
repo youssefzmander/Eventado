@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pim/UserHome/home.dart';
 import 'package:pim/drawer_widgets/modifierProfile.dart';
+import 'package:pim/singin.out/social_page.dart';
+import 'package:pim/widgets/bottom_navigation_bar.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,26 +44,31 @@ class _ProfileState extends State<Profile> {
       future: fetchedUser,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData) {
+          int _currentIndex;
           return Scaffold(
-            appBar: AppBar(
-              title: const Text("Profile"),
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
+              appBar: AppBar(
+                title: const Text("Profile"),
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                  },
                 ),
-                onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
-                },
               ),
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Body(),
-              ],
-            ),
-          );
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Body(),
+                ],
+              ),
+              bottomNavigationBar: HomePageButtonNavigationBar(
+                onTap: (index) => setState(() => _currentIndex = index),
+                currentIndex: 2,
+                //currentIndex: _currentIndex,
+              ));
         } else {
           return const Scaffold(
             body: Center(
@@ -177,7 +184,10 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Log Out",
             icon: Icon(Icons.logout),
-            press: () {},
+            press: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SocialPage()));
+            },
           ),
         ],
       ),

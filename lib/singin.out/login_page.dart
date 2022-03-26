@@ -33,7 +33,7 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             TextFormField(
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: const UnderlineInputBorder(),
                 labelText: 'Your Email',
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
@@ -57,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             TextFormField(
               obscureText: _obscureText,
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: const UnderlineInputBorder(),
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
                 ),
@@ -66,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
                   // ignore: prefer_const_constructors
                   icon: Icon(
                     Icons.visibility,
-                    color: Colors.black,
+                    color: Colors.blueGrey,
                   ),
                   onPressed: () {
                     setState(() {

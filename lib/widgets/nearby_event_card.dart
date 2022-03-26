@@ -4,8 +4,6 @@ import 'package:pim/constant/text_style.dart';
 import 'package:pim/models/event_model.dart';
 import 'package:pim/widgets/ui_helper.dart';
 
-import '../utils/datetime_utils.dart';
-
 class NearbyEventCard extends StatelessWidget {
   final Event event;
   final VoidCallback onTap;
@@ -52,7 +50,7 @@ class NearbyEventCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(DateTimeUtils.getFullDate(event.eventDate), style: monthStyle),
+          // Text(DateTimeUtils.getFullDate(event.eventDate), style: monthStyle),
           UIHelper.verticalSpace(8),
           Text(event.name, style: titleStyle),
           UIHelper.verticalSpace(8),

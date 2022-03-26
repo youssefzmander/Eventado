@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:pim/constant/color.dart';
 import 'package:pim/constant/text_style.dart';
 import 'package:pim/models/event_model.dart';
-import 'package:pim/utils/datetime_utils.dart';
 import 'package:pim/widgets/ui_helper.dart';
 
 import 'models/event_model.dart';
@@ -230,9 +229,8 @@ class _EventDetailPageState extends State<EventDetailPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(DateTimeUtils.getMonth(event.eventDate), style: monthStyle),
-              Text(DateTimeUtils.getDayOfMonth(event.eventDate),
-                  style: titleStyle),
+              Text(event.eventDate.toString(), style: monthStyle),
+              Text(event.eventDate.toString(), style: titleStyle),
             ],
           ),
         ),
@@ -241,8 +239,8 @@ class _EventDetailPageState extends State<EventDetailPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(DateTimeUtils.getDayOfWeek(event.eventDate),
-                style: titleStyle),
+            //Text(DateTimeUtils.getDayOfWeek(event.eventDate),
+            //  style: titleStyle),
             UIHelper.verticalSpace(4),
             const Text("10:00 - 12:00 PM", style: subtitleStyle),
           ],
@@ -252,19 +250,6 @@ class _EventDetailPageState extends State<EventDetailPage>
           padding: const EdgeInsets.all(2),
           decoration: const ShapeDecoration(
               shape: StadiumBorder(), color: primaryLight),
-          child: Row(
-            children: <Widget>[
-              UIHelper.horizontalSpace(8),
-              Text("Add To Calendar",
-                  style: subtitleStyle.copyWith(
-                      color: Theme.of(context).primaryColor)),
-              FloatingActionButton(
-                mini: true,
-                onPressed: () {},
-                child: const Icon(Icons.add),
-              ),
-            ],
-          ),
         ),
       ],
     );
@@ -278,15 +263,6 @@ class _EventDetailPageState extends State<EventDetailPage>
         UIHelper.verticalSpace(),
         Text(event.description, style: subtitleStyle),
         UIHelper.verticalSpace(8),
-        InkWell(
-          child: Text(
-            "Read more...",
-            style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                decoration: TextDecoration.underline),
-          ),
-          onTap: () {},
-        ),
       ],
     );
   }

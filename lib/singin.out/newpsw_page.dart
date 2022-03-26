@@ -45,14 +45,19 @@ class _NewPasswordState extends State<NewPassword> {
             key: _keyForm,
             child: Column(
               children: [
+                Text(
+                  "Please Finish the process",
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    hintText: "abc@email.com",
+                    hintText: "Your Email",
                     labelStyle: TextStyle(
-                      color: Colors.grey[400],
+                      color: Color.fromARGB(255, 10, 9, 9),
                     ),
-                    border: OutlineInputBorder(
+                    border: UnderlineInputBorder(
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(5.4),
                       ),
@@ -96,7 +101,7 @@ class _NewPasswordState extends State<NewPassword> {
                         });
                       },
                     ),
-                    border: const OutlineInputBorder(
+                    border: const UnderlineInputBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(0.0),
                       ),
@@ -131,7 +136,7 @@ class _NewPasswordState extends State<NewPassword> {
                         });
                       },
                     ),
-                    border: OutlineInputBorder(
+                    border: UnderlineInputBorder(
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(0.0),
                       ),

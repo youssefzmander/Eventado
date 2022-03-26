@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.0.13
   sqflite: ^2.0.2
   font_awesome_flutter: ^9.2.0
+  flutter_svg: ^1.0.3
 
 
 

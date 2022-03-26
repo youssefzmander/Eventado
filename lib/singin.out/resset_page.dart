@@ -47,11 +47,13 @@ class Resset extends StatelessWidget {
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    hintText: "abc@email.com",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    suffixIcon: Icon(Icons.email),
+                    hintText: "Your Email",
                     labelStyle: TextStyle(
                       color: Colors.grey[400],
                     ),
-                    border: OutlineInputBorder(
+                    border: UnderlineInputBorder(
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(5.4),
                       ),
@@ -75,6 +77,7 @@ class Resset extends StatelessWidget {
                   },
                 ),
               ),
+              const SizedBox(height: 25),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const StadiumBorder(),
@@ -105,7 +108,7 @@ class Resset extends StatelessWidget {
                       if (response.statusCode == 200) {
                         Map<String, dynamic> userData =
                             json.decode(response.body);
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NewPassword()));

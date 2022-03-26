@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 class Event {
   String name;
   String description;
-  DateTime eventDate;
+  String eventDate;
   String image;
   String location;
   String organizer;
@@ -18,6 +22,32 @@ class Event {
   });
 }
 
+/*
+final String _baseUrl = "10.0.2.2:3001";
+
+late Future<bool> _fetchedEvents;
+
+Future<bool> fetchEvents() async {
+  http.Response response = await http.get(Uri.http(_baseUrl, "/event"));
+
+  List<dynamic> eventsFromServer = json.decode(response.body);
+  for (int i = 0; i < eventsFromServer.length; i++) {
+    upcomingEvents.add(Event(
+        description: eventsFromServer[i]["description"],
+        eventDate: eventsFromServer[i]["date"],
+        image: 'https://source.unsplash.com/800x600/?concert',
+        location: 'Fairview Gospel Church',
+        name: eventsFromServer[i]["name"],
+        organizer: eventsFromServer[i]["organizer"],
+        price: eventsFromServer[i]["price"]));
+  }
+  print(eventsFromServer);
+
+  return true;
+}
+*/
+final List<Event> upcomingEvents = [];
+/*
 final List<Event> upcomingEvents = [
   Event(
     name: "The Pretty Reckless",
@@ -49,12 +79,12 @@ final List<Event> upcomingEvents = [
     organizer: "Westfield Centre",
     price: 30,
   ),
-];
+];*/
 
 final List<Event> nearbyEvents = [
   Event(
     name: "The Pretty Reckless",
-    eventDate: DateTime.now().add(const Duration(days: 1)),
+    eventDate: "07-08-2023",
     image: 'https://source.unsplash.com/600x800/?concert',
     description:
         "The pretty reckless is an American rock band from New york city, Formed in 2009. The",
@@ -64,7 +94,7 @@ final List<Event> nearbyEvents = [
   ),
   Event(
     name: "New Thread Quartet",
-    eventDate: DateTime.now().add(const Duration(days: 4)),
+    eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?live',
     description:
         "The pretty reckless is an American rock band from New york city, Formed in 2009. The",
@@ -74,7 +104,7 @@ final List<Event> nearbyEvents = [
   ),
   Event(
     name: "Songwriters in Concert",
-    eventDate: DateTime.now().add(const Duration(days: 2)),
+    eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?orchestra',
     description:
         "The pretty reckless is an American rock band from New york city, Formed in 2009. The",
@@ -84,7 +114,7 @@ final List<Event> nearbyEvents = [
   ),
   Event(
     name: "Rock Concert",
-    eventDate: DateTime.now().add(const Duration(days: 21)),
+    eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?music',
     description:
         "The pretty reckless is an American rock band from New york city, Formed in 2009. The",
@@ -94,7 +124,7 @@ final List<Event> nearbyEvents = [
   ),
   Event(
     name: "Songwriters in Concert",
-    eventDate: DateTime.now().add(const Duration(days: 16)),
+    eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?rock_music',
     description:
         "The pretty reckless is an American rock band from New york city, Formed in 2009. The",

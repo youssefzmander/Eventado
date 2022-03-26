@@ -4,8 +4,6 @@ import 'package:pim/constant/text_style.dart';
 import 'package:pim/models/event_model.dart';
 import 'package:pim/widgets/ui_helper.dart';
 
-import '../utils/datetime_utils.dart';
-
 class UpComingEventCard extends StatelessWidget {
   final Event event;
   final VoidCallback onTap;
@@ -59,9 +57,9 @@ class UpComingEventCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(DateTimeUtils.getMonth(event.eventDate), style: monthStyle),
-              Text(DateTimeUtils.getDayOfMonth(event.eventDate),
-                  style: titleStyle),
+              //Text(DateTimeUtils.getMonth(event.eventDate), style: monthStyle),
+              //Text(DateTimeUtils.getDayOfMonth(event.eventDate),
+              //style: titleStyle),
             ],
           ),
         ),
