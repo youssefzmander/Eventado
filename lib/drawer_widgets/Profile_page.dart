@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pim/UserHome/home.dart';
+import 'package:pim/drawer_widgets/change-password.dart';
 import 'package:pim/drawer_widgets/modifierProfile.dart';
+import 'package:pim/drawer_widgets/profileUser.dart';
+
 import 'package:pim/singin.out/social_page.dart';
 import 'package:pim/widgets/bottom_navigation_bar.dart';
 
@@ -46,7 +49,9 @@ class _ProfileState extends State<Profile> {
         if (snapshot.hasData) {
           int _currentIndex;
           return Scaffold(
+              backgroundColor: Color(0xFFEDECF2),
               appBar: AppBar(
+                backgroundColor: Color(0xFFEDECF2),
                 title: const Text("Profile"),
                 leading: IconButton(
                   icon: const Icon(
@@ -143,7 +148,7 @@ class ProfileMenu extends StatelessWidget {
           padding: EdgeInsets.all(20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: Color(0xFFF5F6F9),
+          backgroundColor: Color.fromARGB(255, 224, 230, 245),
         ),
         onPressed: press,
         child: Row(
@@ -169,6 +174,14 @@ class Body extends StatelessWidget {
           ProfilePic(),
           SizedBox(height: 15),
           ProfileMenu(
+            text: "Profile",
+            icon: Icon(Icons.person),
+            press: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Profilee()));
+            },
+          ),
+          ProfileMenu(
             text: "My Account",
             icon: Icon(Icons.account_box),
             press: () => {
@@ -177,9 +190,12 @@ class Body extends StatelessWidget {
             },
           ),
           ProfileMenu(
-            text: "Notifications",
-            icon: Icon(Icons.notifications),
-            press: () {},
+            text: "Password",
+            icon: Icon(Icons.password_sharp),
+            press: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => changepaswrd()));
+            },
           ),
           ProfileMenu(
             text: "Log Out",

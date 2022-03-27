@@ -8,9 +8,10 @@ class SingUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.cyan[50],
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white.withOpacity(0),
+        backgroundColor: Colors.cyan[50],
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -107,7 +108,7 @@ class SinupForm extends StatefulWidget {
 
 class _SinupFormFormState extends State<SinupForm> {
   var _obscureText = true;
-  bool role = false;
+
   late String? _f_name;
   late String? _username;
   late String? _email;
@@ -130,10 +131,11 @@ class _SinupFormFormState extends State<SinupForm> {
           children: <Widget>[
             TextFormField(
                 decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.person),
                   border: const UnderlineInputBorder(),
                   labelText: "Full Name",
                   labelStyle: TextStyle(
-                    color: Colors.grey[400],
+                    color: color,
                   ),
                 ),
                 onSaved: (String? value) {
@@ -149,10 +151,11 @@ class _SinupFormFormState extends State<SinupForm> {
             const SizedBox(height: 30),
             TextFormField(
               decoration: InputDecoration(
+                suffixIcon: Icon(Icons.email),
                 border: const UnderlineInputBorder(),
-                labelText: "abc@email.com",
+                labelText: "Your Email",
                 labelStyle: TextStyle(
-                  color: Colors.grey[400],
+                  color: color,
                 ),
               ),
               onSaved: (String? value) {
@@ -170,12 +173,13 @@ class _SinupFormFormState extends State<SinupForm> {
             ),
             const SizedBox(height: 30),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
+                  suffixIcon: Icon(Icons.face),
                   labelText: "Choose your UserName",
                   labelStyle: TextStyle(
-                    color: Colors.grey[400],
+                    color: color,
                   ),
-                  border: const UnderlineInputBorder()),
+                  border: UnderlineInputBorder()),
               onSaved: (String? value) {
                 _username = value;
               },
@@ -193,7 +197,7 @@ class _SinupFormFormState extends State<SinupForm> {
               decoration: InputDecoration(
                 border: const UnderlineInputBorder(),
                 labelStyle: TextStyle(
-                  color: Colors.grey[400],
+                  color: color,
                 ),
                 labelText: 'Password',
                 suffixIcon: IconButton(
@@ -225,7 +229,7 @@ class _SinupFormFormState extends State<SinupForm> {
               decoration: InputDecoration(
                 border: const UnderlineInputBorder(),
                 labelStyle: TextStyle(
-                  color: Colors.grey[400],
+                  color: color,
                 ),
                 labelText: 'ConfirmPassword',
                 suffixIcon: IconButton(

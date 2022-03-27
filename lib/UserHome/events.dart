@@ -51,7 +51,9 @@ class _EventsState extends State<Events> {
         if (snapshot.hasData) {
           int _currentIndex;
           return Scaffold(
+              backgroundColor: Color(0xFFEDECF2),
               appBar: AppBar(
+                backgroundColor: Color(0xFFEDECF2),
                 elevation: 0,
                 title: const Text("My Events"),
                 leading: IconButton(

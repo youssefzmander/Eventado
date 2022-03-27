@@ -13,6 +13,7 @@ class HomePageButtonNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor: Color(0xFFEDECF2),
       onTap: (index) {
         if (index == 0)
           Navigator.pushReplacement(

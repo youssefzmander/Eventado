@@ -11,7 +11,6 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/size_config.dart';
-import 'Settings.dart';
 
 class ModifierProfile extends StatefulWidget {
   @override
@@ -35,18 +34,16 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  bool showPassword = false;
-  late String _id;
+  String? _id;
 
-  String? _f_name;
-  String? _username;
-  String? _email;
-
+  late String? _f_name;
+  late String? _username;
+  late String? _email;
   late SharedPreferences prefs;
 
   final String _baseUrl = "10.0.2.2:3001";
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   late Future<bool> fetchedUser;
   Future<bool> fetchUser() async {
     prefs = await SharedPreferences.getInstance();
@@ -67,7 +64,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFEDECF2),
       appBar: AppBar(
+        title: const Text("Informations"),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -77,49 +76,37 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 context, MaterialPageRoute(builder: (context) => Profile()));
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.settings,
-              color: color,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => Settings()));
-            },
-          ),
-        ],
       ),
       body: Container(
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            children: [
-              Text("Modify your Profile", style: headingStyle),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                "Your account is already verified",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.caption,
-              ),
-              SizedBox(height: SizeConfig.screenHeight * 0.03),
-              Form(
-                  child: Column(
+        child: ListView(
+          children: [
+            Text("Edit your Informations", style: headingStyle),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                Text(
+                  "Your account is already verified",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+                Icon(Icons.verified_user_rounded),
+              ],
+            ),
+            SizedBox(height: SizeConfig.screenHeight * 0.03),
+            Form(
+              key: _formKey,
+              child: Column(
                 children: <Widget>[
                   TextFormField(
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        hintText: (_f_name),
-                        icon: Icon(Icons.person),
-                        helperText: "Full Name",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        suffixIcon: Icon(Icons.person),
+                        border: const UnderlineInputBorder(),
+                        labelText: "Full Name",
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(255, 3, 29, 116),
+                          color: color,
                         ),
                       ),
                       onSaved: (String? value) {
@@ -135,12 +122,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   const SizedBox(height: 30),
                   TextFormField(
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: (_email),
-                      helperText: "Email",
-                      icon: Icon(Icons.email),
+                      suffixIcon: Icon(Icons.email),
+                      border: const UnderlineInputBorder(),
+                      labelText: "Your Email",
                       labelStyle: TextStyle(
-                        color: Colors.grey[400],
+                        color: color,
                       ),
                     ),
                     onSaved: (String? value) {
@@ -156,38 +142,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       }
                     },
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 30),
                   TextFormField(
-                    decoration: InputDecoration(
-                        hintText: (_username),
-                        icon: Icon(Icons.nordic_walking_sharp),
-                        helperText: "Username",
+                    decoration: const InputDecoration(
+                        suffixIcon: Icon(Icons.face),
+                        labelText: "Choose your UserName",
                         labelStyle: TextStyle(
-                          color: Colors.grey[400],
+                          color: color,
                         ),
-                        border: const OutlineInputBorder()),
+                        border: UnderlineInputBorder()),
                     onSaved: (String? value) {
                       _username = value;
                     },
                     validator: (String? value) {
-                      if (value!.isEmpty || value.length < 8) {
+                      if (value!.isEmpty || value.length < 5) {
                         return "Too short !";
                       } else {
                         return null;
                       }
                     },
-                  ),
-                  const SizedBox(height: 25),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        hintText: ("0000000000000"),
-                        icon: Icon(Icons.account_balance_wallet_rounded),
-                        helperText: "Wallet_address",
-                        labelStyle: TextStyle(
-                          color: Colors.grey[400],
-                        ),
-                        border: const OutlineInputBorder()),
-                    onSaved: (String? value) {},
                   ),
                   const SizedBox(
                     height: 20,
@@ -218,14 +191,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           "Content-Type": "application/json; charset=UTF-8"
                         };
                         http
-                            .put(Uri.http(_baseUrl, "/user" + _id),
+                            .put(Uri.http(_baseUrl, "/user/$_id"),
                                 headers: headers, body: json.encode(userData))
                             .then((http.Response response) {
                           if (response.statusCode == 201) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext) {
+                                  return const AlertDialog(
+                                    title: Text("Information"),
+                                    content:
+                                        Text("Profile updated successfully"),
+                                  );
+                                });
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MyHomePage(),
+                                builder: (context) => Profile(),
                               ),
                             );
                           } else {
@@ -244,15 +226,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                   ),
                 ],
-              )),
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
+/*
 class EdiImage extends StatefulWidget {
   const EdiImage({Key? key}) : super(key: key);
 
@@ -349,3 +331,4 @@ class _EditImageProfileState extends State<EdiImage> {
     }
   }
 }
+*/

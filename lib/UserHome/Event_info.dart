@@ -43,15 +43,16 @@ class EventInfo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(_date, style: monthStyle),
+                Text(_date.toString().substring(0, 10), style: monthStyle),
                 UIHelper.verticalSpace(8),
                 Text(_name, style: titleStyle),
                 UIHelper.verticalSpace(8),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.price_change_rounded),
+                    Icon(Icons.access_time_outlined),
                     UIHelper.horizontalSpace(4),
-                    Text(_price.toUpperCase(), style: subtitleStyle),
+                    Text(_date.toString().substring(11, 16) + " PM",
+                        style: subtitleStyle),
                   ],
                 ),
               ],

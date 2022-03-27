@@ -6,6 +6,9 @@ import 'package:pim/constant/text_style.dart';
 import 'package:pim/models/event_model.dart';
 import 'package:pim/widgets/ui_helper.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'models/event_model.dart';
 
 class EventDetailPage extends StatefulWidget {
@@ -88,8 +91,6 @@ class _EventDetailPageState extends State<EventDetailPage>
                           buildEventDate(),
                           UIHelper.verticalSpace(24),
                           buildAboutEvent(),
-                          UIHelper.verticalSpace(24),
-                          buildOrganizeInfo(),
                           UIHelper.verticalSpace(24),
                           //...List.generate(10, (index) => ListTile(title: Text("Dummy content"))).toList(),
                         ],
@@ -229,8 +230,10 @@ class _EventDetailPageState extends State<EventDetailPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(event.eventDate.toString(), style: monthStyle),
-              Text(event.eventDate.toString(), style: titleStyle),
+              Text(event.eventDate.toString().substring(8, 10),
+                  style: monthStyle),
+              Text(event.eventDate.toString().substring(5, 7),
+                  style: titleStyle),
             ],
           ),
         ),
@@ -239,10 +242,10 @@ class _EventDetailPageState extends State<EventDetailPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            //Text(DateTimeUtils.getDayOfWeek(event.eventDate),
-            //  style: titleStyle),
+            Text("Wednesday"),
             UIHelper.verticalSpace(4),
-            const Text("10:00 - 12:00 PM", style: subtitleStyle),
+            Text(event.eventDate.toString().substring(11, 16) + "PM",
+                style: subtitleStyle),
           ],
         ),
         const Spacer(),
@@ -263,35 +266,6 @@ class _EventDetailPageState extends State<EventDetailPage>
         UIHelper.verticalSpace(),
         Text(event.description, style: subtitleStyle),
         UIHelper.verticalSpace(8),
-      ],
-    );
-  }
-
-  Widget buildOrganizeInfo() {
-    return Row(
-      children: <Widget>[
-        CircleAvatar(
-          child: Text(event.organizer[0]),
-        ),
-        UIHelper.horizontalSpace(16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(event.organizer, style: titleStyle),
-            UIHelper.verticalSpace(4),
-            const Text("Organizer", style: subtitleStyle),
-          ],
-        ),
-        const Spacer(),
-        TextButton(
-          child: Text("Follow",
-              style: TextStyle(color: Theme.of(context).primaryColor)),
-          onPressed: () {},
-          style: TextButton.styleFrom(
-            shape: const StadiumBorder(),
-            primary: primaryLight,
-          ),
-        )
       ],
     );
   }
@@ -331,7 +305,12 @@ class _EventDetailPageState extends State<EventDetailPage>
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               primary: Theme.of(context).primaryColor,
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final String _baseUrl = "10.0.2.2:3001";
+
+              http.Response response =
+                  await http.get(Uri.http(_baseUrl, "/create-charge"));
+            },
             child: Text(
               "Get a Ticket",
               style: titleStyle.copyWith(

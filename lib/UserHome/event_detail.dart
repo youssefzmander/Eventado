@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path/path.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+import 'package:timezone/data/latest.dart' as tz;
 import '../constant/text_style.dart';
 import '../utils/size_config.dart';
 import '../widgets/ui_helper.dart';
@@ -42,6 +39,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   void initState() {
     fetchedEvents = fetchEvents();
     super.initState();
+    tz.initializeTimeZones();
   }
 
   @override
@@ -51,7 +49,10 @@ class _ProductDetailsState extends State<ProductDetails> {
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(),
+            backgroundColor: Color(0xFFEDECF2),
+            appBar: AppBar(
+              backgroundColor: Color(0xFFEDECF2),
+            ),
             body: Column(
               children: [
                 SizedBox(
@@ -77,18 +78,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Container(
-                          padding:
-                              EdgeInsets.all(getProportionateScreenWidth(15)),
-                          width: getProportionateScreenWidth(64),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 161, 180, 238),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              bottomLeft: Radius.circular(20),
+                      child: GestureDetector(
+                        // ignore: avoid_print
+                        onTap: () {},
+                        child: Container(
+                            padding:
+                                EdgeInsets.all(getProportionateScreenWidth(15)),
+                            width: getProportionateScreenWidth(64),
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 161, 180, 238),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          child: Icon(Icons.notifications_active)),
+                            child: Icon(Icons.notifications_active)),
+                      ),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -99,7 +104,25 @@ class _ProductDetailsState extends State<ProductDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text((_date)),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(_date.toString().substring(0, 10),
+                                  style: monthStyle),
+                              UIHelper.verticalSpace(8),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time_outlined),
+                                  UIHelper.horizontalSpace(4),
+                                  Text(
+                                      _date.toString().substring(11, 16) +
+                                          " PM",
+                                      style: subtitleStyle),
+                                ],
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -139,35 +162,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text("Price", style: subtitleStyle),
                     UIHelper.verticalSpace(8),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                              text: (_price),
-                              style: titleStyle.copyWith(
-                                  color: Theme.of(context).primaryColor)),
-                          const TextSpan(
-                              text: "/per person",
-                              style: TextStyle(color: Colors.black)),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ],
             ),
-            floatingActionButton: FloatingActionButton.extended(
-                icon: const Icon(Icons.shopping_basket_rounded),
-                label: const Text(
-                  "Buy ticket",
-                  textScaleFactor: 1.5,
-                ),
-                onPressed: () async {
-                  http.Response response =
-                      await http.get(Uri.http(_baseUrl, "/create-charge"));
-                }),
           );
         } else {
           return const Scaffold(
