@@ -200,7 +200,13 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Log Out",
             icon: Icon(Icons.logout),
-            press: () {
+            press: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.remove('userId');
+              prefs.remove('f_name');
+              prefs.remove('username');
+              prefs.remove('email');
+
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => SocialPage()));
             },

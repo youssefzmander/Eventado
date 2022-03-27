@@ -66,6 +66,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       backgroundColor: Color(0xFFEDECF2),
       appBar: AppBar(
+        backgroundColor: Color(0xFFEDECF2),
         title: const Text("Informations"),
         leading: IconButton(
           icon: const Icon(
@@ -101,9 +102,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         suffixIcon: Icon(Icons.person),
-                        border: const UnderlineInputBorder(),
+                        border: UnderlineInputBorder(),
                         labelText: "Full Name",
                         labelStyle: TextStyle(
                           color: color,
@@ -121,9 +122,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       }),
                   const SizedBox(height: 30),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       suffixIcon: Icon(Icons.email),
-                      border: const UnderlineInputBorder(),
+                      border: UnderlineInputBorder(),
                       labelText: "Your Email",
                       labelStyle: TextStyle(
                         color: color,
