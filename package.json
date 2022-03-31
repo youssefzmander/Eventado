@@ -29,5 +29,6 @@
   "bugs": {
     "url": "https://github.com/yesminekh/Eventado/issues"
   },
-  "homepage": "https://github.com/yesminekh/Eventado#readme"
+  "homepage": "https://github.com/yesminekh/Eventado#readme",
+  "devDependencies": {}
 }
