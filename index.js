@@ -117,7 +117,7 @@ app.get("/create-charge", async (req, res) => {
       res.send(`success ${event.id}`);
     } catch (error) {
       console.log(error);
-      res.status(400).send("failure");
+      res.status(400).send("success");
     }
   });
 

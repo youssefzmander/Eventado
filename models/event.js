@@ -9,9 +9,9 @@ const eventSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: String
+        type: Date
     },
-    nbrMax: {
+    Price: {
         type: Number
     },
     participants: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
@@ -20,7 +20,11 @@ const eventSchema = new mongoose.Schema({
     },
     Affiche: {
         type: String
+    },
+    organizer:{
+        type:String
     }
+    
 
 })
 
