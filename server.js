@@ -55,7 +55,7 @@ app.use('/eventRegister', EventRegisterRouter)
 
 
 //paiement
-
+/*
 app.get("/create-charge", async (req, res) => {
     const chargeData = {
       name: "om kolthoum",
@@ -132,5 +132,5 @@ app.get("/success-payment", (req, res) => {
 
 
 
-
+*/
 app.listen(3001, () => console.log('Server Started'))
