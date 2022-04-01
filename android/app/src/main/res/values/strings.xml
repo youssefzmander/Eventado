@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Eventado</string>
+
+    <string name="facebook_app_id">768639694098793</string>
+
+  
+    <string name="fb_login_protocol_scheme">fb768639694098793</string>
+    <string name="facebook_client_token">5dd64ab4061d567321af5ed493118a54</string>
+    
+
+</resources>

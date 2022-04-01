@@ -65,7 +65,7 @@ class Verifier extends StatelessWidget {
                   padding: EdgeInsets.only(right: 35),
                   child: Row(
                     children: <Widget>[
-                      Expanded(
+                      const Expanded(
                           child: DelayedAnimation(
                         delay: 6500,
                         child: Text("Didn't recieve the code  "),
@@ -80,7 +80,7 @@ class Verifier extends StatelessWidget {
                               ),
                             );
                           },
-                          child: DelayedAnimation(
+                          child: const DelayedAnimation(
                             delay: 6500,
                             child: Text(
                               "Re_send",

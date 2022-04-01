@@ -16,7 +16,7 @@ class _LoginFormState extends State<LoginForm> {
   late String? _email;
   late String? _password;
 
-  final String _baseUrl = "https://eventado.herokuapp.com";
+  final String _baseUrl = "eventado.herokuapp.com";
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
   @override
@@ -104,7 +104,7 @@ class _LoginFormState extends State<LoginForm> {
                   };
 
                   http
-                      .post(Uri.http(_baseUrl, "/user/login"),
+                      .post(Uri.https("eventado.herokuapp.com", "/user/login"),
                           headers: headers, body: json.encode(userData))
                       .then((http.Response response) async {
                     if (response.statusCode == 200) {

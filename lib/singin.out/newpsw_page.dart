@@ -16,7 +16,6 @@ class _NewPasswordState extends State<NewPassword> {
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   late String? _email;
   late String? _passwd;
-  final String _baseUrl = "10.0.2.2:3001";
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +172,11 @@ class _NewPasswordState extends State<NewPassword> {
                       };
 
                       http
-                          .patch(Uri.http(_baseUrl, "/user/editPassword"),
-                              headers: headers, body: json.encode(userData))
+                          .patch(
+                              Uri.https("eventado.herokuapp.com",
+                                  "/user/editPassword"),
+                              headers: headers,
+                              body: json.encode(userData))
                           .then((http.Response response) async {
                         if (response.statusCode == 200) {
                           showDialog(

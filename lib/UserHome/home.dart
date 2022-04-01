@@ -25,12 +25,11 @@ class MyHomePage extends StatefulWidget {
 late int _currentIndex = 0;
 const List<Widget> _interfaces = const [MyHomePage()];
 
-final String _baseUrl = "10.0.2.2:3001";
-
 late Future<bool> _fetchedEvents;
 
 Future<bool> fetchEvents() async {
-  http.Response response = await http.get(Uri.http(_baseUrl, "/event"));
+  http.Response response =
+      await http.get(Uri.https("eventado.herokuapp.com", "/event"));
 
   List<dynamic> eventsFromServer = json.decode(response.body);
   for (int i = 0; i < eventsFromServer.length; i++) {
@@ -148,28 +147,31 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           Text("Upcoming Events",
               style: headerStyle.copyWith(color: Colors.white)),
           UIHelper.verticalSpace(16),
-          FutureBuilder(
-              future: _fetchedEvents,
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: upcomingEvents.length,
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final event = upcomingEvents[index];
-                      return UpComingEventCard(
-                          event: event, onTap: () => viewEventDetail(event));
-                    },
-                  );
-                } else {
-                  return const Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-              }),
+          SizedBox(
+            height: 300,
+            child: FutureBuilder(
+                future: _fetchedEvents,
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: upcomingEvents.length,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final event = upcomingEvents[index];
+                        return UpComingEventCard(
+                            event: event, onTap: () => viewEventDetail(event));
+                      },
+                    );
+                  } else {
+                    return const Scaffold(
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                }),
+          ),
         ],
       ),
     );

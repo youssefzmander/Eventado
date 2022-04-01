@@ -14,12 +14,12 @@ class Events extends StatefulWidget {
 class _EventsState extends State<Events> {
   final List<EventsData> _events = [];
   late int _currentIndex = 0;
-  final String _baseUrl = "10.0.2.2:3001";
 
   late Future<bool> _fetchedEvents;
 
   Future<bool> fetchEvents() async {
-    http.Response response = await http.get(Uri.http(_baseUrl, "/event"));
+    http.Response response =
+        await http.get(Uri.https("eventado.herokuapp.com", "/event"));
 
     List<dynamic> eventsFromServer = json.decode(response.body);
     for (int i = 0; i < eventsFromServer.length; i++) {

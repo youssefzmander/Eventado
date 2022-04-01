@@ -114,8 +114,6 @@ class _SinupFormFormState extends State<SinupForm> {
   late String? _email;
   late String? _pwd;
 
-  final String _baseUrl = "10.0.2.2:3001";
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -142,7 +140,7 @@ class _SinupFormFormState extends State<SinupForm> {
                   _f_name = value;
                 },
                 validator: (String? value) {
-                  if (value!.isEmpty || value.length < 8) {
+                  if (value!.isEmpty || value.length < 5) {
                     return "Too short !";
                   } else {
                     return null;
@@ -184,7 +182,7 @@ class _SinupFormFormState extends State<SinupForm> {
                 _username = value;
               },
               validator: (String? value) {
-                if (value!.isEmpty || value.length < 8) {
+                if (value!.isEmpty || value.length < 4) {
                   return "Too short !";
                 } else {
                   return null;
@@ -275,7 +273,7 @@ class _SinupFormFormState extends State<SinupForm> {
                     "Content-Type": "application/json; charset=UTF-8"
                   };
                   http
-                      .post(Uri.http(_baseUrl, "/user"),
+                      .post(Uri.https("eventado.herokuapp.com", "/user"),
                           headers: headers, body: json.encode(userData))
                       .then((http.Response response) {
                     if (response.statusCode == 201) {

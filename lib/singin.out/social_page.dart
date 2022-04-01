@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pim/singin.out/facebook.dart';
 import 'package:pim/singin.out/resset_page.dart';
 import 'package:pim/singin.out/singup_page.dart';
 import '../main.dart';
@@ -72,7 +73,14 @@ class SocialPage extends StatelessWidget {
               child: Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => facebook(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       primary: const Color(0xFF576dff),

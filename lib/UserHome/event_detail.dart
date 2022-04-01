@@ -20,7 +20,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   late String _price;
   late String _organizer;
   late SharedPreferences prefs;
-  final String _baseUrl = "10.0.2.2:3001";
 
   late Future<bool> fetchedEvents;
 
