@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const cors = require("cors");
 const morgan = require("morgan");
 
-/*
+
 const { Client, resources, Webhook } = require("coinbase-commerce-node");
 const {
   COINBASE_API_KEY,
@@ -14,7 +14,7 @@ const {
 } = require("./config");
 const { Charge } = resources;
 Client.init(COINBASE_API_KEY);
-*/
+
 
 
 app.use(cors());
