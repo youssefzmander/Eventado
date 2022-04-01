@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const Role = require('../middleware/roles');
 const nodemailer = require("nodemailer");
 
 

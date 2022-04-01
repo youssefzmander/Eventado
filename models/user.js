@@ -43,7 +43,6 @@ UserSchema.methods.generatePasswordReset = function () {
 };
 
 
-//mongoose.set('useFindAndModify', false);
 
 
 module.exports = mongoose.model('User', UserSchema)
