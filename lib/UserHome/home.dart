@@ -23,7 +23,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 late int _currentIndex = 0;
-final List<Widget> _interfaces = const [MyHomePage()];
+const List<Widget> _interfaces = const [MyHomePage()];
 
 final String _baseUrl = "10.0.2.2:3001";
 
@@ -34,7 +34,6 @@ Future<bool> fetchEvents() async {
 
   List<dynamic> eventsFromServer = json.decode(response.body);
   for (int i = 0; i < eventsFromServer.length; i++) {
-    //if (eventsFromServer[i]["name"] != eventsFromServer[i + 1]["name"])
     upcomingEvents.add(Event(
         description: eventsFromServer[i]["description"],
         eventDate: eventsFromServer[i]["date"],
@@ -91,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           maxOffset: scrollController.position.maxScrollExtent / 2);
     });
     super.initState();
+
     _fetchedEvents = fetchEvents();
   }
 
@@ -148,19 +148,28 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           Text("Upcoming Events",
               style: headerStyle.copyWith(color: Colors.white)),
           UIHelper.verticalSpace(16),
-          SizedBox(
-            height: 250,
-            child: ListView.builder(
-              itemCount: upcomingEvents.length,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final event = upcomingEvents[index];
-                return UpComingEventCard(
-                    event: event, onTap: () => viewEventDetail(event));
-              },
-            ),
-          ),
+          FutureBuilder(
+              future: _fetchedEvents,
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: upcomingEvents.length,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final event = upcomingEvents[index];
+                      return UpComingEventCard(
+                          event: event, onTap: () => viewEventDetail(event));
+                    },
+                  );
+                } else {
+                  return const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              }),
         ],
       ),
     );

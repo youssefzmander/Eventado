@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pim/UserHome/events.dart';
 import 'package:pim/UserHome/home.dart';
 import 'package:pim/drawer_widgets/Profile_page.dart';
+import 'package:pim/drawer_widgets/messages.dart';
+import 'package:pim/drawer_widgets/notifications.dart';
 
 class HomePageButtonNavigationBar extends StatelessWidget {
   final Function(int) onTap;
@@ -22,10 +24,13 @@ class HomePageButtonNavigationBar extends StatelessWidget {
         if (index == 1)
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Events()));
-        ;
+
         if (index == 2)
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Profile()));
+        if (index == 3)
+          showModalBottomSheet(
+              context: context, builder: ((Builder) => notifications()));
       },
       currentIndex: currentIndex,
       selectedItemColor: Theme.of(context).primaryColor,
