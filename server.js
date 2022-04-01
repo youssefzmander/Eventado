@@ -5,16 +5,16 @@ const mongoose = require('mongoose')
 const cors = require("cors");
 const morgan = require("morgan");
 
-
+/*
 const { Client, resources, Webhook } = require("coinbase-commerce-node");
 const {
   COINBASE_API_KEY,
   COINBASE_WEBHOOK_SECRET,
   DOMAIN,
-} = require("../config");
+} = require("./config");
 const { Charge } = resources;
 Client.init(COINBASE_API_KEY);
-
+*/
 
 
 app.use(cors());
@@ -41,16 +41,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //routes
-const userRouter = require('../routes/user')
+const userRouter = require('./routes/user')
 app.use('/user', userRouter)
 
-const EventRouter = require('../routes/event')
+const EventRouter = require('./routes/event')
 app.use('/event', EventRouter)
 
 
 
 
-const EventRegisterRouter = require('../routes/eventRegister')
+const EventRegisterRouter = require('./routes/eventRegister')
 app.use('/eventRegister', EventRegisterRouter)
 
 
