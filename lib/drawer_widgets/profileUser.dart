@@ -21,7 +21,7 @@ class _ProfileeState extends State<Profilee> {
   late Future<bool> fetchedUser;
   Future<bool> fetchUser() async {
     prefs = await SharedPreferences.getInstance();
-    _id = prefs.getString("userId")!;
+    //_id = prefs.getString("userId")!;
     f_name = prefs.getString("f_name")!;
     _username = prefs.getString("username")!;
     _email = prefs.getString("email")!;

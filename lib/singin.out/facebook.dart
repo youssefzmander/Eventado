@@ -2,6 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:pim/UserHome/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import '../drawer_widgets/Profile_page.dart';
+import '../main.dart';
+
 class facebook extends StatefulWidget {
   const facebook({Key? key}) : super(key: key);
 
@@ -69,40 +77,106 @@ class _facebookState extends State<facebook> {
     print(_userData);
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Facebook Auth Project')),
         body: _checking
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Center(
                 child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _userData != null
-                      ? Text('name: ${_userData!['name']}')
-                      : Container(),
-                  _userData != null
-                      ? Text('email: ${_userData!['email']}')
-                      : Container(),
-                  _userData != null
-                      ? Container(
-                          child: Image.network(
-                              _userData!['picture']['data']['url']),
-                        )
-                      : Container(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CupertinoButton(
-                      color: Colors.blue,
-                      child: Text(
-                        _userData != null ? 'LOGOUT' : 'LOGIN',
-                        style: TextStyle(color: Colors.white),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _userData != null
+                        ? Text('name: ${_userData!['name']}')
+                        : Container(),
+                    _userData != null
+                        ? Text('email: ${_userData!['email']}')
+                        : Container(),
+                    _userData != null
+                        ? Container(
+                            child: Image.network(
+                                _userData!['picture']['data']['url']),
+                          )
+                        : Container(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        primary: color,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 125,
+                          vertical: 13,
+                        ),
                       ),
-                      onPressed: _userData != null ? _logout : _login)
-                ],
-              )),
+                      child: const Text(
+                        'CONTINUE',
+                      ),
+                      onPressed: () {
+                        Map<String, dynamic> userData = {
+                          "f_name": _userData!['name'],
+                          "email": _userData!['email'],
+                          "username": _userData!['name'],
+                          "password": "12345678",
+                        };
+
+                        Map<String, String> headers = {
+                          "Content-Type": "application/json; charset=UTF-8"
+                        };
+                        http
+                            .post(Uri.https("eventado.herokuapp.com", "/user"),
+                                headers: headers, body: json.encode(userData))
+                            .then((http.Response response) async {
+                          if (response.statusCode == 201) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Profile(),
+                              ),
+                            );
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setString("username", _userData!['name']);
+                            prefs.setString("f_name", _userData!['name']);
+                            prefs.setString("email", _userData!['email']);
+                            print(prefs.getString("username"));
+                            print(prefs.getString("f_name"));
+                            print(prefs.getString("email"));
+
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext) {
+                                  return const AlertDialog(
+                                    title: Text("Information"),
+                                    content: Text(
+                                        "Before joining us , please verify your email and a password!"),
+                                  );
+                                });
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext) {
+                                  return const AlertDialog(
+                                    title: Text("Information"),
+                                    content: Text(
+                                        "An error has occurred. Try Again"),
+                                  );
+                                });
+                          }
+                        });
+                      },
+                    ),
+                    CupertinoButton(
+                        color: Colors.blue,
+                        child: Text(
+                          _userData != null ? 'LOGOUT' : 'LOGIN',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        onPressed: _userData != null ? _logout : _login)
+                  ],
+                ),
+              ),
       ),
     );
   }

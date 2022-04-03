@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pim/UserHome/home.dart';
+import 'package:pim/singin.out/facebook.dart';
 import '../main.dart';
 import 'avatr_page.dart';
 import 'package:http/http.dart' as http;
@@ -56,7 +58,14 @@ class SingUp extends StatelessWidget {
               child: Row(
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => facebook(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       primary: const Color(0xFF576dff),
@@ -128,9 +137,9 @@ class _SinupFormFormState extends State<SinupForm> {
         child: Column(
           children: <Widget>[
             TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   suffixIcon: Icon(Icons.person),
-                  border: const UnderlineInputBorder(),
+                  border: UnderlineInputBorder(),
                   labelText: "Full Name",
                   labelStyle: TextStyle(
                     color: color,
@@ -148,9 +157,9 @@ class _SinupFormFormState extends State<SinupForm> {
                 }),
             const SizedBox(height: 30),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 suffixIcon: Icon(Icons.email),
-                border: const UnderlineInputBorder(),
+                border: UnderlineInputBorder(),
                 labelText: "Your Email",
                 labelStyle: TextStyle(
                   color: color,
@@ -280,7 +289,7 @@ class _SinupFormFormState extends State<SinupForm> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Avatar(),
+                          builder: (context) => const MyHomePage(),
                         ),
                       );
                     } else {

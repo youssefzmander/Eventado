@@ -27,7 +27,7 @@ class _ProfileState extends State<Profile> {
 
   Future<bool> fetchUser() async {
     prefs = await SharedPreferences.getInstance();
-    _id = prefs.getString("userId")!;
+    //_id = prefs.getString("userId")!;
     f_name = prefs.getString("f_name")!;
     _username = prefs.getString("username")!;
     _email = prefs.getString("email")!;
@@ -49,17 +49,19 @@ class _ProfileState extends State<Profile> {
         if (snapshot.hasData) {
           int _currentIndex;
           return Scaffold(
-              backgroundColor: Color(0xFFEDECF2),
+              backgroundColor: const Color(0xFFEDECF2),
               appBar: AppBar(
-                backgroundColor: Color(0xFFEDECF2),
+                backgroundColor: const Color(0xFFEDECF2),
                 title: const Text("Profile"),
                 leading: IconButton(
                   icon: const Icon(
                     Icons.arrow_back,
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyHomePage()));
                   },
                 ),
               ),
@@ -100,8 +102,8 @@ class ProfilePic extends StatelessWidget {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user.jpg"),
+          const CircleAvatar(
+            backgroundImage: const AssetImage("assets/images/user.jpg"),
           ),
           Positioned(
             right: -16,
@@ -116,7 +118,7 @@ class ProfilePic extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {},
-                child: Icon(Icons.camera),
+                child: const Icon(Icons.camera),
               ),
             ),
           )
@@ -142,21 +144,21 @@ class ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextButton(
         style: TextButton.styleFrom(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: Color.fromARGB(255, 224, 230, 245),
+          backgroundColor: const Color.fromARGB(255, 224, 230, 245),
         ),
         onPressed: press,
         child: Row(
           children: [
             icon,
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Expanded(child: Text(text)),
-            Icon(Icons.arrow_forward_ios),
+            const Icon(Icons.arrow_forward_ios),
           ],
         ),
       ),
@@ -168,14 +170,14 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          ProfilePic(),
-          SizedBox(height: 15),
+          const ProfilePic(),
+          const SizedBox(height: 15),
           ProfileMenu(
             text: "Profile",
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             press: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Profilee()));
@@ -183,7 +185,7 @@ class Body extends StatelessWidget {
           ),
           ProfileMenu(
             text: "My Account",
-            icon: Icon(Icons.account_box),
+            icon: const Icon(Icons.account_box),
             press: () => {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ModifierProfile()))
@@ -191,7 +193,7 @@ class Body extends StatelessWidget {
           ),
           ProfileMenu(
             text: "Password",
-            icon: Icon(Icons.password_sharp),
+            icon: const Icon(Icons.password_sharp),
             press: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => changepaswrd()));
@@ -199,7 +201,7 @@ class Body extends StatelessWidget {
           ),
           ProfileMenu(
             text: "Log Out",
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             press: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.remove('userId');
