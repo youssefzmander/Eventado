@@ -1,4 +1,5 @@
 class Event {
+  String id;
   String name;
   String description;
   String eventDate;
@@ -8,6 +9,7 @@ class Event {
   num price;
 
   Event({
+    required this.id,
     required this.eventDate,
     required this.image,
     required this.location,
@@ -79,6 +81,7 @@ final List<Event> upcomingEvents = [
 
 final List<Event> nearbyEvents = [
   Event(
+    id: "1",
     name: "The Pretty Reckless",
     eventDate: "07-08-2023",
     image: 'https://source.unsplash.com/600x800/?concert',
@@ -89,6 +92,7 @@ final List<Event> nearbyEvents = [
     price: 30,
   ),
   Event(
+    id: "2",
     name: "New Thread Quartet",
     eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?live',
@@ -99,6 +103,7 @@ final List<Event> nearbyEvents = [
     price: 30,
   ),
   Event(
+    id: "3",
     name: "Songwriters in Concert",
     eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?orchestra',
@@ -109,6 +114,7 @@ final List<Event> nearbyEvents = [
     price: 30,
   ),
   Event(
+    id: "47",
     name: "Rock Concert",
     eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?music',
@@ -119,6 +125,7 @@ final List<Event> nearbyEvents = [
     price: 32,
   ),
   Event(
+    id: "1487",
     name: "Songwriters in Concert",
     eventDate: '07-08-2023',
     image: 'https://source.unsplash.com/600x800/?rock_music',

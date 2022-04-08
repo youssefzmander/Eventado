@@ -8,6 +8,7 @@ import 'package:pim/widgets/ui_helper.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/event_model.dart';
 
@@ -196,6 +197,7 @@ class _EventDetailPageState extends State<EventDetailPage>
               child: InkWell(
                 customBorder: const CircleBorder(),
                 onTap: () => setState(() => isFavorite = !isFavorite),
+                // addToFavorite(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(
@@ -242,7 +244,7 @@ class _EventDetailPageState extends State<EventDetailPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Wednesday"),
+            const Text("Wednesday"),
             UIHelper.verticalSpace(4),
             Text(event.eventDate.toString().substring(11, 16) + "PM",
                 style: subtitleStyle),
@@ -306,10 +308,22 @@ class _EventDetailPageState extends State<EventDetailPage>
               primary: Theme.of(context).primaryColor,
             ),
             onPressed: () async {
-              final String _baseUrl = "10.0.2.2:3001";
+              print(event.id);
 
-              http.Response response =
-                  await http.get(Uri.http(_baseUrl, "/create-charge"));
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              print(prefs.getString("userId"));
+
+              Map<String, dynamic> eventRegisterData = {
+                "user_id": prefs.getString("userId"),
+                "event_id": event.id,
+              };
+
+              Map<String, String> headers = {
+                "Content-Type": "application/json; charset=UTF-8"
+              };
+
+              http.post(Uri.https("10.0.2.2:3000", "/eventRegister"),
+                  headers: headers, body: json.encode(eventRegisterData));
             },
             child: Text(
               "Get a Ticket",

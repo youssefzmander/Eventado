@@ -5,6 +5,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import '../constant/text_style.dart';
 import '../utils/size_config.dart';
 import '../widgets/ui_helper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails();
@@ -20,7 +21,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   late String _price;
   late String _organizer;
   late SharedPreferences prefs;
-
+  bool isFavorite = false;
   late Future<bool> fetchedEvents;
 
   Future<bool> fetchEvents() async {
@@ -77,21 +78,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        // ignore: avoid_print
-                        onTap: () {},
-                        child: Container(
-                            padding:
-                                EdgeInsets.all(getProportionateScreenWidth(15)),
-                            width: getProportionateScreenWidth(64),
-                            decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 161, 180, 238),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                              ),
-                            ),
-                            child: Icon(Icons.notifications_active)),
+                      child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: () => setState(() => isFavorite = !isFavorite),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            isFavorite
+                                ? Icons.notifications_active
+                                : Icons.notifications_off,
+                            color: Colors.blue,
+                            size: 30,
+                          ),
+                        ),
                       ),
                     ),
                     Container(

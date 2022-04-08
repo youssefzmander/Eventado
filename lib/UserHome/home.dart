@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:pim/drawer_widgets/messages.dart';
 import 'package:pim/event_detail_page.dart';
@@ -34,10 +35,10 @@ Future<bool> fetchEvents() async {
   List<dynamic> eventsFromServer = json.decode(response.body);
   for (int i = 0; i < eventsFromServer.length; i++) {
     upcomingEvents.add(Event(
+        id: eventsFromServer[i]["_id"],
         description: eventsFromServer[i]["description"],
         eventDate: eventsFromServer[i]["date"],
-        image:
-            'https://imgs.search.brave.com/Q3o3M6b6AzmVMmCUbOmHeA__FwUzWo9DVd8LHGNhwFk/rs:fit:704:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC5f/cVRLTmtJLWJIQkFZ/ZWI4QnlpX05nSGFF/XyZwaWQ9QXBp',
+        image: eventsFromServer[i]["Affiche"],
         location: 'Tunisia',
         name: eventsFromServer[i]["name"],
         organizer: eventsFromServer[i]["organizer"],
@@ -133,7 +134,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Messages()));
         },
-        child: const Icon(Icons.message),
+        child: Badge(
+          badgeContent: Text('12'),
+          child: const Icon(Icons.message_outlined),
+        ),
       ),
     );
   }

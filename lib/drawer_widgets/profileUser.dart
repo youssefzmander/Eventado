@@ -61,7 +61,7 @@ class _ProfileeState extends State<Profilee> {
                             borderRadius: BorderRadius.circular(62.5),
                             image: const DecorationImage(
                                 fit: BoxFit.cover,
-                                image: AssetImage('assets/images/user.jpg'))),
+                                image: AssetImage('assets/images/Avatar.PNG'))),
                       ),
                     ),
                     SizedBox(height: 25.0),
