@@ -5,7 +5,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class payementPaypal extends StatefulWidget {
   payementPaypal(this.prix) ;
-  final prix ;
+  var prix ;
 
   @override
   _PayementPaypalState createState() => _PayementPaypalState();
@@ -15,8 +15,16 @@ class payementPaypal extends StatefulWidget {
 
 
 class _PayementPaypalState extends State<payementPaypal>  {
-  String loadHTML(){
-    return r'''''';
+  String _loadHTML(){
+    return '''
+    html>
+        <body onload="document.f.submit();">
+          <form id="f" name="f" method="post" action="http://10.0.2.2:3001/pay">
+            <input type="hidden" name="prix" value="${widget.prix}" />
+          </form>
+        </body>
+      </html>
+      ''';
   }
   @override
   Widget build ( BuildContext context){
@@ -30,7 +38,8 @@ class _PayementPaypalState extends State<payementPaypal>  {
           }
         },
         javascriptMode: JavascriptMode.unrestricted,
-        initialUrl: 'http://10.0.2.2:3001/pay',
+        //initialUrl: 'http://10.0.2.2:3001/pay',
+          initialUrl: Uri.dataFromString(_loadHTML(), mimeType: 'text/html').toString(),
       ),
     );
   }
