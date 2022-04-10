@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/event_model.dart';
+import 'payementPaypal.dart';
 
 class EventDetailPage extends StatefulWidget {
   final Event event;
@@ -308,6 +309,13 @@ class _EventDetailPageState extends State<EventDetailPage>
               primary: Theme.of(context).primaryColor,
             ),
             onPressed: () async {
+
+              var prix = event.price ;
+              var push = Navigator.push(
+                  context ,
+                  MaterialPageRoute(
+                      builder: (context) => payementPaypal (prix))
+              );
               print(event.id);
 
               SharedPreferences prefs = await SharedPreferences.getInstance();
